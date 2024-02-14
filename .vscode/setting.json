@@ -1,0 +1,36 @@
+{
+  "editor.tabSize": 2,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "css.validate": false,
+  "scss.validate": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.fixAll.stylelint": true
+  },
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/*.module.scss.d.ts": true
+  },
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "todohighlight.keywords": [
+    "TODO:",
+    "NOTE:",
+    {
+      "text": "TODO:",
+      "color": "#cd853f",
+      "backgroundColor": "#ffe4b5",
+      "outline": "solid 1px #cd853f"
+    },
+    {
+      "text": "NOTE:",
+      "color": "#009944",
+      "backgroundColor": "#bee0c2",
+      "outline": "solid 1px #009944"
+    }
+  ],
+  "todohighlight.defaultStyle": {
+    "borderRadius": "2px"
+  },
+  "cSpell.words": []
+}
