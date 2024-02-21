@@ -12,6 +12,7 @@
     "@auth/prisma-adapter": "^1.4.0",
     "@prisma/client": "^5.9.1",
     "next": "14.1.0",
+    "prisma-import": "^1.0.5",
     "react": "^18",
     "react-dom": "^18"
   },

@@ -9,6 +9,7 @@
     "source.fixAll.stylelint": true
   },
   "files.exclude": {
+    "**/.next": true,
     "**/node_modules": true,
     "**/*.module.scss.d.ts": true
   },
