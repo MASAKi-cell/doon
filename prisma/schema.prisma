@@ -1,3 +1,12 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
 // ユーザー情報
 model User {
   id            String    @id @default(cuid())
@@ -7,6 +16,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  bookmarks     Article[]
 }
 
 model Account {
