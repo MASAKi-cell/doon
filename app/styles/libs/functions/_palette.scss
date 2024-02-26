@@ -1,0 +1,19 @@
+$palettes: (
+  "red": (
+    "default": #de2323,
+    "d1": #b8141a,
+    "l1": #fff2f0,
+  )
+  "blue":
+  (
+    "default": #0075d1,
+    "l1": #e6f8ff,
+  ),
+  "black": (
+    "default": #260404,
+  ),
+);
+
+@function p($group, $val: "default") {
+  @return map-get(map-get($palettes, $group), $val);
+}
