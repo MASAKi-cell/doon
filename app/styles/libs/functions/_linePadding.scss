@@ -1,6 +1,0 @@
-$baseFontSize: 16;
-$lineHeight: 1.5;
-
-@function lp($padding, $size: $baseFontSize) {
-  @return calc($padding - ($size * ($lineHeight - 1) / 2)) + px;
-}
