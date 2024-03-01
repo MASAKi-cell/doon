@@ -1,6 +1,6 @@
-# doon
+# Doon
 
-An Electron application with React and TypeScript
+Noot book App
 
 ## Recommended IDE Setup
 
