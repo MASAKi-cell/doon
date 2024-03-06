@@ -1,3 +1,4 @@
+/** ログ */
 export const LOG_LEVEL = {
   ERROR: 'error',
   WARN: 'warn',
