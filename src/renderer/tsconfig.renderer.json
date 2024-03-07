@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+      "target": "es2021",
+      "lib": ["es2021", "dom", "esnext"],
+      "module": "esnext",
+      "jsx": "react",
+      "noImplicitAny": true,
+      "sourceMap": true,
+      "outDir": "./dist/renderer",
+      "baseUrl": "./",
+      "paths": {
+      "@/*": ["src/*"]
+    },
+    },
+    "include": ["src/renderer/**/*"],
+    "exclude": ["src/main/**/*"]
+  }
+

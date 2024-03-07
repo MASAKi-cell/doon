@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "es2021",
+    "module": "commonjs",
+    "outDir": "./dist/main",
+    "lib": ["es2021","esnext"],
+    "noImplicitAny": true,
+    "sourceMap": true
+  },
+  "include": ["src/main/**/*"],
+  "exclude": ["src/renderer/**/*"]
+}
