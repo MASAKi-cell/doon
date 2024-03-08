@@ -3,6 +3,12 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 
+/** type */
+import { LOG_LEVEL, LOG_MASSAGE } from './contents/enum'
+
+/** composable */
+import { logger } from './logger/index'
+
 function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -18,7 +24,7 @@ function createWindow(): void {
     }
   })
 
-  mainWindow.on('ready-to-show', () => {
+  mainWindow.on('ready-to-show', async (): Promise<void> => {
     mainWindow.show()
   })
 
@@ -40,13 +46,15 @@ function createWindow(): void {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+  logger(LOG_LEVEL.INFO, LOG_MASSAGE.APP_START)
+
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron')
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
   // see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
-  app.on('browser-window-created', (_, window) => {
+  app.on('browser-window-created', async (_, window): Promise<void> => {
     optimizer.watchWindowShortcuts(window)
   })
 
@@ -62,14 +70,18 @@ app.whenReady().then(() => {
   })
 })
 
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
-app.on('window-all-closed', () => {
+// NOTE: ウィンドウが全部閉じられたらアプリを終了
+app.on('window-all-closed', async (): Promise<void> => {
   if (process.platform !== 'darwin') {
+    // macOS 以外の場合、アプリケーションを終了する
+    logger(LOG_LEVEL.INFO, LOG_MASSAGE.APP_FINISH)
     app.quit()
   }
 })
 
-// In this file you can include the rest of your app"s specific main process
-// code. You can also put them in separate files and require them here.
+const isTheLock = app.requestSingleInstanceLock()
+
+// NOTE: 既にアプリが起動されていたら、新規に起動したアプリを終了
+if (!isTheLock) {
+  app.quit()
+}
