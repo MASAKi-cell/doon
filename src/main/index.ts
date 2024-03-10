@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, crashReporter } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
@@ -10,7 +10,7 @@ import { LOG_LEVEL, LOG_MASSAGE } from './contents/enum'
 import { logger } from './logger/index'
 
 function createWindow(): void {
-  // Create the browser window.
+  // windowを作成
   const mainWindow = new BrowserWindow({
     width: 900,
     height: 670,
@@ -42,32 +42,39 @@ function createWindow(): void {
   }
 }
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
+// クラッシュレポート
+crashReporter.start({
+  uploadToServer: false
+})
+
+// 初期化処理、ブラウザウィンドウのセッティング
 app.whenReady().then(() => {
   logger(LOG_LEVEL.INFO, LOG_MASSAGE.APP_START)
 
-  // Set app user model id for windows
-  electronApp.setAppUserModelId('com.electron')
+  try {
+    // Set app user model id for windows
+    electronApp.setAppUserModelId('com.electron')
 
-  // Default open or close DevTools by F12 in development
-  // and ignore CommandOrControl + R in production.
-  // see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
-  app.on('browser-window-created', async (_, window): Promise<void> => {
-    optimizer.watchWindowShortcuts(window)
-  })
+    // see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
+    app.on('browser-window-created', async (_, window): Promise<void> => {
+      optimizer.watchWindowShortcuts(window)
+    })
 
-  // IPC test
-  ipcMain.on('ping', () => console.log('pong'))
+    // IPCテスト
+    ipcMain.on('ping', () => console.log('pong'))
 
-  createWindow()
+    createWindow()
 
-  app.on('activate', function () {
-    // On macOS it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
-  })
+    app.on('activate', function () {
+      //  (macOS用)
+      // ウィンドウが1つも無いときにドックのアイコンを押したらウィンドウを出す
+      if (BrowserWindow.getAllWindows().length === 0) createWindow()
+    })
+  } catch (error: any) {
+    logger(LOG_LEVEL.ERROR, `Error while creating dev environment: ${error}`)
+
+    app.quit()
+  }
 })
 
 // NOTE: ウィンドウが全部閉じられたらアプリを終了
