@@ -1,22 +1,20 @@
 import { contextBridge } from 'electron'
-import { electronAPI } from '@electron-toolkit/preload'
 
-// Custom APIs for renderer
-const api = {}
+/** type */
+import { ERROR_MASSAGE } from '../main/contents/enum'
 
-// Use `contextBridge` APIs to expose Electron APIs to
-// renderer only if context isolation is enabled, otherwise
-// just add to the DOM global.
-if (process.contextIsolated) {
-  try {
-    contextBridge.exposeInMainWorld('electron', electronAPI)
-    contextBridge.exposeInMainWorld('api', api)
-  } catch (error) {
-    console.error(error)
-  }
-} else {
-  // @ts-ignore (define in dts)
-  window.electron = electronAPI
-  // @ts-ignore (define in dts)
-  window.api = api
+if (!process.contextIsolated) {
+  // コンテキストが分離されていない場合
+  throw new Error(ERROR_MASSAGE.MUST_USE_CONTEXT_ISOLATION)
+}
+
+// NOTE:
+// https://www.electronjs.org/docs/latest/tutorial/context-isolation/#usage-with-typescript
+// contextBridgeに露出させるAPIを定義
+export interface IElectronAPI {}
+
+try {
+  contextBridge.exposeInMainWorld('electron', {})
+} catch (error) {
+  console.error(error)
 }

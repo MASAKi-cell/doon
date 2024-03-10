@@ -33,8 +33,6 @@ function createWindow(): void {
     return { action: 'deny' }
   })
 
-  // HMR for renderer base on electron-vite cli.
-  // Load the remote URL for development or the local html file for production.
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
     mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
   } else {
@@ -52,10 +50,10 @@ app.whenReady().then(() => {
   logger(LOG_LEVEL.INFO, LOG_MASSAGE.APP_START)
 
   try {
-    // Set app user model id for windows
+    // セットアップ
     electronApp.setAppUserModelId('com.electron')
 
-    // see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
+    // see： https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
     app.on('browser-window-created', async (_, window): Promise<void> => {
       optimizer.watchWindowShortcuts(window)
     })
