@@ -9,10 +9,17 @@
   "compilerOptions": {
     "composite": true,
     "jsx": "react-jsx",
+    "noUnusedLocals": true, // 未使用の変数を禁止
+    "noUnusedParameters": true,  // 未使用の引数を禁止
+    "noImplicitAny": true, // 暗黙のanyを禁止
+    "outDir": "./dist",
     "baseUrl": ".",
     "paths": {
       "@renderer/*": [
         "src/renderer/src/*"
+      ],
+      "@main/*": [
+        "src/main/*"
       ]
     }
   }
