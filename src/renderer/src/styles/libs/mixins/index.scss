@@ -1,0 +1,17 @@
+/* ネガティブマージンの設定 */
+@mixin negativeMargin($space: 24) {
+  padding-top: $space + px;
+  padding-bottom: $space + px;
+  padding-right: -$space + px;
+  padding-left: -$space + px;
+}
+
+/* スクロールバーを非表示 */
+@mixin hideScrollBar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
