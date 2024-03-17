@@ -15,6 +15,12 @@ function createWindow(): void {
     width: 900,
     height: 670,
     show: false,
+    center: true, // 中央配置
+    title: 'Doon NoteBook',
+    vibrancy: 'appearance-based', // macOS ウインドウに曇ガラスのエフェクトの設定
+    visualEffectState: 'active', // macOS ウインドウの動作状態を設定
+    titleBarStyle: 'hidden', // タイトルバーを隠す
+    trafficLightPosition: { x: 15, y: 10 }, // フレームレスウインドウの信号機ボタンのカスタム位置を設定
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
