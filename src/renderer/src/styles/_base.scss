@@ -1,0 +1,49 @@
+@use '@/styles/libs/functions/index' as *;
+@use '@/styles/libs/mixins/index' as *;
+
+body {
+  position: relative;
+  font-family: 'Hiragino Sans', sans-serif;
+  font-weight: 300;
+  line-height: 1.5;
+  color: $baseFontColor;
+  background: #fff;
+
+  &.scroll-prevent {
+    overflow: hidden;
+  }
+}
+
+.root {
+  overflow-x: clip;
+
+  @include media(md) {
+    width: #{$baseContainerWidth}px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+}
+
+:root {
+  --safe-area-inset-bottom: env(safe-area-inset-bottom);
+}
+
+img {
+  vertical-align: top;
+}
+
+button {
+  cursor: pointer;
+}
+
+textarea {
+  word-break: break-all;
+}
+
+hr {
+  display: block;
+  height: 1px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  background: p('border', 'l1');
+}

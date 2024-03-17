@@ -1,0 +1,107 @@
+// stylelint-disable
+
+$overlayColor: rgb(0 14 32 / 69.8%);
+
+@keyframes fade-in {
+  from {
+    background-color: transparent;
+  }
+
+  to {
+    background-color: $overlayColor;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    background-color: $overlayColor;
+  }
+
+  to {
+    background-color: transparent;
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.8);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+  }
+}
+
+@keyframes scale-out {
+  from {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.8);
+  }
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-down {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(100%);
+  }
+}
+
+:where(.basic-modal, .half-modal, .full-modal) {
+  .ReactModal__Overlay--after-open {
+    animation: fade-in 0.2s ease-out both;
+  }
+
+  .ReactModal__Overlay--before-close {
+    animation: fade-out 0.2s ease-out both;
+  }
+}
+
+.basic-modal {
+  .ReactModal__Content--after-open {
+    animation: scale-in 0.2s ease-out both;
+  }
+
+  .ReactModal__Content--before-close {
+    animation: scale-out 0.2s ease-out both;
+  }
+}
+
+.half-modal {
+  .ReactModal__Content--after-open {
+    animation: slide-up 0.2s ease-out both;
+  }
+
+  .ReactModal__Content--before-close {
+    animation: slide-down 0.2s ease-out both;
+  }
+}
+
+.full-modal {
+  .ReactModal__Content--after-open {
+    animation: slide-up 0.2s ease-out both;
+  }
+
+  .ReactModal__Content--before-close {
+    animation: slide-down 0.2s ease-out both;
+  }
+}
