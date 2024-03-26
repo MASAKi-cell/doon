@@ -1,5 +1,5 @@
 import { ComponentProps, forwardRef } from 'react'
-import styles from '@/src/styles/features/layout/appLayout.module.scss'
+import styles from '@/renderer/src/styles/features/layout/appLayout.module.scss'
 
 export const Root = ({ className, children, ...props }: ComponentProps<'main'>) => {
   return (
