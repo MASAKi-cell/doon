@@ -3,7 +3,7 @@ import styles from '@/renderer/src/styles/features/layout/appLayout.module.scss'
 
 export const Root = ({ className, children, ...props }: ComponentProps<'main'>) => {
   return (
-    <main className={(styles.border, className)} {...props}>
+    <main className={(styles.wrapper, className)} {...props}>
       {children}
     </main>
   )
@@ -11,7 +11,7 @@ export const Root = ({ className, children, ...props }: ComponentProps<'main'>) 
 
 export const Sidebar = ({ className, children, ...props }: ComponentProps<'aside'>) => {
   return (
-    <aside className={className} {...props}>
+    <aside className={(styles.sidebar, className)} {...props}>
       {children}
     </aside>
   )
@@ -20,7 +20,7 @@ export const Sidebar = ({ className, children, ...props }: ComponentProps<'aside
 export const Content = forwardRef<HTMLDivElement, ComponentProps<'div'>>(
   ({ className, children, ...props }, ref) => {
     return (
-      <div ref={ref} className={className} {...props}>
+      <div ref={ref} className={(styles.content, className)} {...props}>
         {children}
       </div>
     )

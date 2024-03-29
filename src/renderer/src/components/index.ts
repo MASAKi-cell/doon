@@ -1,1 +1,1 @@
-export * from '@/components/features/layout/AppLayout'
+export * from '@/renderer/src/components/features/layout/AppLayout'

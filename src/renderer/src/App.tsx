@@ -1,4 +1,4 @@
-import { Root, Sidebar, Content } from './components/index'
+import { Root, Sidebar, Content } from '@/renderer/src/components/index'
 
 function App(): JSX.Element {
   const ipcHandle = (): Promise<void> => window.electron.sendPing()
