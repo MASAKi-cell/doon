@@ -1,0 +1,26 @@
+@use '@/renderer/src/styles/libs/functions/index' as *;
+
+$baseFontColor: p('black'); // #1f1f1f
+$baseTextColor: p('gray'); // #595959
+
+$errTextColor: p('red'); // #de2323
+$errBgColor: p('red', 'l1'); // #fff2f0
+
+$baseBgColor: p('gray', 'l3'); // #f5f5f5
+$baseBorderColor: p('border'); // #bfbfbf
+
+$baseContainerWidth: 393;
+$baseContainerHeight: 852;
+
+$SFFont: -apple-system, sans-serif;
+$NotoSerif: 'Noto Serif', serif;
+$Lora: 'Lora', serif;
+
+$zMax: 20;
+$zSnackbar: 18;
+$zBasicModal: 16;
+$zHalfModal: 14;
+$zFullModal: 12;
+$zModalFloat: 10;
+$zModal: 8;
+$zFloat: 6;

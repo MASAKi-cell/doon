@@ -1,5 +1,6 @@
-@use '@/styles/libs/functions/index' as *;
-@use '@/styles/libs/mixins/index' as *;
+@use '@/renderer/src/styles/libs/functions/index' as *;
+@use '@/renderer/src/styles/libs/mixins/index' as *;
+@use '@/renderer/src/styles/_variable.scss' as *;
 
 body {
   position: relative;
@@ -16,12 +17,9 @@ body {
 
 .root {
   overflow-x: clip;
-
-  @include media(md) {
-    width: #{$baseContainerWidth}px;
-    margin-right: auto;
-    margin-left: auto;
-  }
+  width: #{$baseContainerWidth}px;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 :root {

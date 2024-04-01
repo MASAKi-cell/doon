@@ -19,7 +19,7 @@ function createWindow(): void {
     title: 'Doon NoteBook',
     vibrancy: 'appearance-based', // macOS ウインドウに曇ガラスのエフェクトの設定
     visualEffectState: 'active', // macOS ウインドウの動作状態を設定
-    titleBarStyle: 'hidden', // タイトルバーを隠す
+    // titleBarStyle: 'hidden', // タイトルバーを隠す
     trafficLightPosition: { x: 15, y: 10 }, // フレームレスウインドウの信号機ボタンのカスタム位置を設定
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
