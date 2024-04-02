@@ -1,6 +1,6 @@
 import { ComponentProps, forwardRef } from 'react'
 
-export const Root = ({ children, ...props }: ComponentProps<'main'>) => {
+export const RootLayout = ({ children, ...props }: ComponentProps<'main'>) => {
   return <main {...props}>{children}</main>
 }
 

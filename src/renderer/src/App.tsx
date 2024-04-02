@@ -1,4 +1,4 @@
-import { Root, Sidebar, Content } from '@/renderer/src/components/index'
+import { RootLayout, Sidebar, Content } from '@/renderer/src/components/index'
 import styles from '@/renderer/src/styles/pages/app.module.scss'
 
 function App(): JSX.Element {
@@ -6,14 +6,14 @@ function App(): JSX.Element {
 
   return (
     <>
-      <Root className={styles.wrapper}>
+      <RootLayout className={styles.wrapper}>
         <Sidebar className={styles.sidebar}>Sidebar</Sidebar>
         <Content className={styles.content}>
           {' '}
           Build an Electron app with <span className="react">React</span>
           &nbsp;and <span className="ts">TypeScript</span>
         </Content>
-      </Root>
+      </RootLayout>
     </>
   )
 }
