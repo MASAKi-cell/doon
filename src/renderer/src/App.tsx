@@ -1,11 +1,12 @@
-import { RootLayout, Sidebar, Content } from '@/renderer/src/components/index'
-import styles from '@/renderer/src/styles/pages/app.module.scss'
+import { RootLayout, Sidebar, Content, TopBar } from './components/index'
+import styles from './styles/pages/app.module.scss'
 
 function App(): JSX.Element {
   const ipcHandle = (): Promise<void> => window.electron.sendPing()
 
   return (
     <>
+      <TopBar />
       <RootLayout className={styles.wrapper}>
         <Sidebar className={styles.sidebar}>Sidebar</Sidebar>
         <Content className={styles.content}>
