@@ -1,0 +1,17 @@
+{
+  "extends": ["stylelint-config-recess-order", "stylelint-config-recommended-scss"],
+  "customSyntax": "postcss-scss",
+  "overrides": [
+    {
+      "files": ["**/*.{ts,jsx,tsx}"],
+      "customSyntax": "@stylelint/postcss-css-in-js"
+    }
+  ],
+  "ignoreFiles": ["electron.vite.config.ts"],
+  "rules": {
+    "selector-pseudo-element-colon-notation": "double",
+    "no-duplicate-selectors": true,
+    "scss/selector-no-union-class-name": true,
+    "declaration-empty-line-before": "never"
+  }
+}

@@ -11,5 +11,8 @@
   "files.exclude": {
     "**/node_modules": true,
     "**/*.module.scss.d.ts": true
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.stylelint": true
   }
 }
