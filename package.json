@@ -28,7 +28,8 @@
     "dayjs": "^1.11.10",
     "electron-log": "^5.1.1",
     "electron-reload": "^2.0.0-alpha.1",
-    "electron-updater": "^6.1.7"
+    "electron-updater": "^6.1.7",
+    "stylelint": "^16.3.1"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config-prettier": "^2.0.0",
