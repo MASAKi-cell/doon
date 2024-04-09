@@ -1,4 +1,4 @@
-import { RootLayout, Sidebar, Content, TopBar } from './components/index'
+import { RootLayout, Sidebar, Content, TopBar, ActionButtonsRow } from './components/index'
 import styles from './styles/pages/app.module.scss'
 
 function App(): JSX.Element {
@@ -8,7 +8,10 @@ function App(): JSX.Element {
     <>
       <TopBar />
       <RootLayout className={styles.wrapper}>
-        <Sidebar className={styles.sidebar}>Sidebar</Sidebar>
+        <Sidebar className={styles.sidebar}>
+          <ActionButtonsRow />
+          Sidebar
+        </Sidebar>
         <Content className={styles.content}>
           {' '}
           Build an Electron app with <span className="react">React</span>

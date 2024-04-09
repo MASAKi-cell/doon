@@ -1,3 +1,7 @@
+@use '@/renderer/src/styles/libs/functions/index' as *;
+
 .wrapper {
   border-radius: 6px;
+  border: 1px solid p('black');
+  transition-duration: 100sm;
 }
