@@ -1,11 +1,11 @@
 import { ActionButton, ActionButtonProps } from './ActionButton'
 import style from '@/renderer/src/styles/features/button/deleteNoteButton.module.scss'
-import { FaRegTrashCan } from 'react-icons/fa6'
+import delete_icon from '@/renderer/src/assets/delete_icon.svg'
 
 export const DeleteNoteButton = ({ ...props }: ActionButtonProps) => {
   return (
     <ActionButton {...props}>
-      <FaRegTrashCan className={style.wrapper} />
+      <img src={delete_icon} className={style.wrapper} />
     </ActionButton>
   )
 }
