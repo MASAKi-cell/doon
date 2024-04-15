@@ -9,7 +9,7 @@ function App(): JSX.Element {
       <TopBar />
       <RootLayout className={styles.wrapper}>
         <Sidebar className={styles.sidebar}>
-          <ActionButtonsRow />
+          <ActionButtonsRow className={styles.button} />
           Sidebar
         </Sidebar>
         <Content className={styles.content}>
