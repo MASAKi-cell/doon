@@ -13,3 +13,5 @@ export const LOG_MASSAGE = {
 export const ERROR_MASSAGE = {
   MUST_USE_CONTEXT_ISOLATION: 'browser Windowではコンテキストの分離が必須です。'
 }
+
+export const APP_DIRECTORY_NAME = 'doon'
