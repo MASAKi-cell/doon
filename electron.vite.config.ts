@@ -19,13 +19,12 @@ export default defineConfig({
     assetsInclude: 'src/renderer/assets/**',
     resolve: {
       alias: {
-        '@shared': resolve('src/shared'),
+        '@/renderer': path.resolve(__dirname, 'src/renderer'),
+        '@/components': resolve('src/renderer/src/components'),
         '@/hooks': resolve('src/renderer/src/hooks'),
         '@/assets': resolve('src/renderer/src/assets'),
         '@/store': resolve('src/renderer/src/store'),
-        '@/components': resolve('src/renderer/src/components'),
-        '@/mocks': resolve('src/renderer/src/mocks'),
-        '@/renderer': path.resolve(__dirname, 'src/renderer')
+        '@/mocks': resolve('src/renderer/src/mocks')
       }
     },
     plugins: [react()]
