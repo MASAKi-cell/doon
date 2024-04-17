@@ -1,3 +1,5 @@
-type NoteListProps = React.ComponentPropsWithoutRef<'ul'> & {
+import { ComponentPropsWithoutRef } from 'react'
+
+type NoteListProps = ComponentPropsWithoutRef<'ul'> & {
   onSelect?: () => void
 }
