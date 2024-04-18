@@ -1,5 +1,7 @@
-import style from '@/renderer/src/styles/features/button/actionButton.module.scss'
 import { ComponentProps } from 'react'
+
+/** scss */
+import style from '@renderer/styles/features/button/actionButton.module.scss'
 
 export type ActionButtonProps = ComponentProps<'button'>
 

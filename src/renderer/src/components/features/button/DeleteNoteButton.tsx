@@ -1,6 +1,9 @@
-import { ActionButton, ActionButtonProps } from './ActionButton'
-import style from '@/renderer/src/styles/features/button/deleteNoteButton.module.scss'
-import delete_icon from '@/renderer/src/assets/delete_icon.svg'
+/** components */
+import { ActionButton, ActionButtonProps } from '@renderer/components/features/button/ActionButton'
+import delete_icon from '@renderer/assets/delete_icon.svg'
+
+/** scss */
+import style from '@renderer/styles/features/button/deleteNoteButton.module.scss'
 
 export const DeleteNoteButton = ({ ...props }: ActionButtonProps) => {
   return (

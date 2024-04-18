@@ -1,6 +1,6 @@
-@use '@/renderer/src/styles/libs/functions/index' as *;
-@use '@/renderer/src/styles/libs/mixins/index' as *;
-@use '@/renderer/src/styles/_variable.scss' as *;
+@use '@renderer/styles/libs/functions/index' as *;
+@use '@renderer/styles/libs/mixins/index' as *;
+@use '@renderer/styles/_variable.scss' as *;
 
 body {
   position: relative;

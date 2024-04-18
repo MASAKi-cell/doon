@@ -1,5 +1,9 @@
-export { NoteInfo } from 'src/renderer/src/contents/note'
+import { ComponentPropsWithoutRef } from 'react'
 
-export type NotePreviewProps = NoteInfo & {
-  isActive?: boolean
-} & ComponentProps<'div'>
+/** types */
+import type { NoteInfo } from 'src/renderer/src/contents/note'
+
+export type NotePreviewProps = ComponentPropsWithoutRef<'div'> &
+  NoteInfo & {
+    isActive?: boolean
+  }
