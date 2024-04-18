@@ -1,5 +1,5 @@
-import { RootLayout, Sidebar, Content, TopBar, ActionButtonsRow } from './components/index'
-import styles from './styles/pages/app.module.scss'
+import { RootLayout, Sidebar, Content, TopBar, ActionButtonsRow } from '@renderer/components/index'
+import styles from '@renderer/styles/pages/app.module.scss'
 
 function App(): JSX.Element {
   const ipcHandle = (): Promise<void> => window.electron.sendPing()

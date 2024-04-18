@@ -1,7 +1,7 @@
 import { ComponentPropsWithoutRef } from 'react'
 
 /** components */
-import { DeleteNoteButton, NewNoteButton } from './button/index'
+import { DeleteNoteButton, NewNoteButton } from '@renderer/components/features/button/index'
 
 export const ActionButtonsRow = ({ ...props }: ComponentPropsWithoutRef<'div'>) => {
   return (
