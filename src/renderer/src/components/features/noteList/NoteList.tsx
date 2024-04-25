@@ -1,5 +1,8 @@
 import { ComponentPropsWithoutRef } from 'react'
 
+/** components */
+import { NotePreview } from '@renderer/components/features/noteList/NotePreview'
+
 type NoteListProps = ComponentPropsWithoutRef<'ul'> & {
   onSelect?: () => void
 }
