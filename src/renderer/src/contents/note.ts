@@ -1,6 +1,6 @@
 export type NoteInfo = {
   title: string
-  lastEditTime: number
+  lastEditTime: Date
 }
 export type NoteContent = string
 
