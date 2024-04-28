@@ -7,7 +7,7 @@ import icon from '../../resources/icon.png?asset'
 import { LOG_LEVEL, LOG_MASSAGE } from './contents/enum'
 
 /** composable */
-import { logger } from './logger/index'
+import { logger } from './utils/logger'
 
 function createWindow(): void {
   // windowを作成

@@ -1,11 +1,10 @@
 import { ComponentPropsWithoutRef } from 'react'
 
 /** utils */
-import { toJpString } from '@renderer/utils/dateTime'
+import { toStirngWithTz } from '@renderer/utils/dateTime'
 
 /** types */
 import type { NoteInfo } from '@renderer/contents/note'
-import { longStyle } from '@renderer/contents/enums/index'
 
 export type NotePreviewProps = ComponentPropsWithoutRef<'div'> &
   NoteInfo & {
@@ -22,7 +21,7 @@ export const NotePreview = ({
   return (
     <div {...props}>
       <h3>{title}</h3>
-      <span>{toJpString(lastEditTime, longStyle)}</span>
+      <span>{toStirngWithTz(lastEditTime)}</span>
     </div>
   )
 }

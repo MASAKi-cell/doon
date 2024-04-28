@@ -7,7 +7,7 @@ export type DateStyle = 'full' | 'long' | 'medium' | 'short'
  * 日付をフォーマットするutils
  * URL：https://tempo.formkit.com/
  */
-const formatDate = 'YYYY-MM-DD'
+const formatDate = 'YYYY/MM/DD'
 const locale = 'Asia/Tokyo'
 
 /**
@@ -18,7 +18,7 @@ export const toJpString = (date: Date, style: DateStyle) => {
 }
 
 /**
- * @returns YYYY-MM-DD
+ * @returns YYYY/MM/DD
  */
 export const toStirngWithTz = (date: Date) => {
   return format({
