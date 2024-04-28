@@ -11,6 +11,14 @@ type NoteListProps = ComponentPropsWithoutRef<'ul'> & {
 }
 
 export const NoteList = ({ onSelect, ...props }: NoteListProps) => {
+  if (!NotesMock.length) {
+    return (
+      <ul {...props}>
+        <span>No Notes Yet!</span>
+      </ul>
+    )
+  }
+
   return (
     <ul {...props}>
       {NotesMock.map((note, i) => (
