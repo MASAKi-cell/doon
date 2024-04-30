@@ -27,7 +27,6 @@
     "@electron-toolkit/preload": "^3.0.0",
     "@electron-toolkit/utils": "^3.0.0",
     "@formkit/tempo": "^0.1.1",
-    "@mdxeditor/editor": "^3.0.1",
     "dayjs": "^1.11.10",
     "electron-log": "^5.1.1",
     "electron-reload": "^2.0.0-alpha.1",
