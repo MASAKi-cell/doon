@@ -18,11 +18,13 @@ function App(): JSX.Element {
     <>
       <TopBar />
       <RootLayout className={styles.wrapper}>
+        {/* sidebar */}
         <Sidebar className={styles.sidebar}>
           <ActionButtonsRow className={styles.button} />
           <NoteList />
         </Sidebar>
 
+        {/* content */}
         <Content className={styles.content}>
           {' '}
           Build an Electron app with <span className="react">React</span>
