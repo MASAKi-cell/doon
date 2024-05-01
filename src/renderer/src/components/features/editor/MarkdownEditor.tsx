@@ -1,15 +1,18 @@
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeHighlight from 'rehype-highlight'
+import rehypeKatex from 'rehype-katex'
+import remarkMath from 'remark-math'
+import rehypeRaw from 'rehype-raw'
 
-const markdown = `\`\`\`js
-console.log('Hello, world!');
-\`\`\`
-`
+const markdown = '### Hi, *Pluto*!'
 
-export const MarkdownEditor = () => {
+export const MarkdownEditor = (): JSX.Element => {
   return (
-    <Markdown rehypePlugins={[rehypeHighlight]} remarkPlugins={[remarkGfm]}>
+    <Markdown
+      remarkPlugins={[remarkGfm, remarkMath]}
+      rehypePlugins={[rehypeHighlight, rehypeKatex, rehypeRaw]}
+    >
       {markdown}
     </Markdown>
   )

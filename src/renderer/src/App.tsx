@@ -27,8 +27,6 @@ function App(): JSX.Element {
         {/* content */}
         <Content className={styles.content}>
           {' '}
-          Build an Electron app with <span className="react">React</span>
-          &nbsp;and <span className="ts">TypeScript</span>
           <NoteTitle />
           <MarkdownEditor />
         </Content>
