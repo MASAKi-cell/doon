@@ -10,7 +10,6 @@ export const MarkdownEditor = (): JSX.Element => {
   const [text, setText] = useState<string>('')
 
   const handletext = (e) => {
-    debugger
     setText(e.target.value)
   }
 
