@@ -26,7 +26,6 @@ function App(): JSX.Element {
 
         {/* content */}
         <Content className={styles.content}>
-          {' '}
           <NoteTitle />
           <MarkdownEditor />
         </Content>

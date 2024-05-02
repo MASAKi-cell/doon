@@ -1,19 +1,28 @@
-import Markdown from 'react-markdown'
+import { useState } from 'react'
+import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeHighlight from 'rehype-highlight'
 import rehypeKatex from 'rehype-katex'
 import remarkMath from 'remark-math'
 import rehypeRaw from 'rehype-raw'
 
-const markdown = '### Hi, *Pluto*!'
-
 export const MarkdownEditor = (): JSX.Element => {
+  const [text, setText] = useState<string>('')
+
+  const handletext = (e) => {
+    debugger
+    setText(e.target.value)
+  }
+
   return (
-    <Markdown
-      remarkPlugins={[remarkGfm, remarkMath]}
-      rehypePlugins={[rehypeHighlight, rehypeKatex, rehypeRaw]}
-    >
-      {markdown}
-    </Markdown>
+    <div>
+      <textarea rows="10" cols="50" onChange={handletext} value={text}></textarea>
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm, remarkMath]}
+        rehypePlugins={[rehypeHighlight, rehypeKatex, rehypeRaw]}
+      >
+        {text}
+      </ReactMarkdown>
+    </div>
   )
 }
