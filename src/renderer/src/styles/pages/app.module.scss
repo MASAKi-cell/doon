@@ -1,3 +1,6 @@
+@use '@renderer/styles/_variable.scss' as *;
+@use '@renderer/styles/libs/functions/index' as *;
+
 .wrapper {
   display: flex;
   flex-direction: row;
@@ -8,12 +11,16 @@
   width: 250px;
   overflow: auto;
   padding-top: 35px;
+  background: $baseBgColor;
+  opacity: 0.95;
 }
 
 .content {
   flex: 1;
   overflow: auto;
   border-left: solid;
+  background: p('black', 'l2');
+  opacity: 0.98;
 }
 
 .button {

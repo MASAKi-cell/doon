@@ -15,7 +15,7 @@ export const MarkdownEditor = (): JSX.Element => {
 
   return (
     <div>
-      <textarea rows="10" cols="50" onChange={handletext} value={text}></textarea>
+      <textarea onChange={handletext} value={text}></textarea>
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[rehypeHighlight, rehypeKatex, rehypeRaw]}
