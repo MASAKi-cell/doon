@@ -15,7 +15,15 @@ export const MarkdownEditor = (): JSX.Element => {
 
   return (
     <div>
-      <textarea onChange={handletext} value={text}></textarea>
+      <textarea
+        id="markdown"
+        name="markdown"
+        rows={50}
+        cols={33}
+        onChange={handletext}
+        value={text}
+        placeholder="Markdown をここに入力"
+      ></textarea>
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[rehypeHighlight, rehypeKatex, rehypeRaw]}
