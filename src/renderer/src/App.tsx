@@ -26,13 +26,6 @@ function App(): JSX.Element {
 
         {/* content */}
         <Content className={styles.content}>
-          <textarea
-            id="markdown"
-            name="markdown"
-            rows={50}
-            cols={33}
-            placeholder="Markdown をここに入力2"
-          ></textarea>
           <NoteTitle />
           <MarkdownEditor />
         </Content>
