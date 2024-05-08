@@ -13,6 +13,6 @@
     "**/*.module.scss.d.ts": true
   },
   "editor.codeActionsOnSave": {
-    "source.fixAll.stylelint": true
+    "source.fixAll.stylelint": "explicit"
   }
 }
