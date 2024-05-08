@@ -12,8 +12,8 @@ import { logger } from './utils/logger'
 function createWindow(): void {
   // windowを作成
   const mainWindow = new BrowserWindow({
-    width: 900,
-    height: 670,
+    width: 1200,
+    height: 900,
     show: false,
     center: true, // 中央配置
     title: 'Doon NoteBook',
