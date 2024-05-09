@@ -9,7 +9,7 @@ body {
   line-height: 1.5;
   color: $baseFontColor;
   background: #fff;
-  // -webkit-app-region: drag; // ドラッグ可能な領域の設定 NOTE: https://www.electronjs.org/ja/docs/latest/api/frameless-window
+  -webkit-app-region: drag; // ドラッグ可能な領域の設定 NOTE: https://www.electronjs.org/ja/docs/latest/api/frameless-window
 
   &.scroll-prevent {
     overflow: hidden;
@@ -33,10 +33,12 @@ img {
 
 button {
   cursor: pointer;
+  -webkit-app-region: no-drag;
 }
 
 textarea {
   word-break: break-all;
+  -webkit-app-region: no-drag;
 }
 
 hr {
