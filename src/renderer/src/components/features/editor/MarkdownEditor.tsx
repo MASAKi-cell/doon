@@ -22,7 +22,6 @@ export const MarkdownEditor = (): JSX.Element => {
         cols={33}
         onChange={handletext}
         value={text}
-        placeholder="Markdown をここに入力"
       ></textarea>
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkMath]}
