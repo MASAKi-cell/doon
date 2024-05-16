@@ -16,5 +16,6 @@ export const logger = (
 }
 
 const setTransports = () => {
+  // TODO：@formkit/tempoに変更
   log.transports.file.fileName = dayjs(new Date()).format('YYYY-MM-DD')
 }

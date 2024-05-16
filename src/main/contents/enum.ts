@@ -1,8 +1,9 @@
 /** ログ */
 export const LOG_LEVEL = {
   ERROR: 'error',
-  WARN: 'warn',
-  INFO: 'info'
+  WARN: 'warning',
+  INFO: 'info',
+  QUSETION: 'question'
 } as const
 
 export const LOG_MASSAGE = {
