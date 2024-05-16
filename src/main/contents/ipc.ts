@@ -3,7 +3,7 @@ export type NoteInfo = {
   lastEditTime: Date
 }
 
-export type NoteContent = string
+export type NoteContent = string | undefined
 
 /** Notes Types */
 export type GetNotes = () => Promise<NoteInfo[]>
