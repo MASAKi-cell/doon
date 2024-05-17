@@ -1,6 +1,9 @@
 import log from 'electron-log'
-import dayjs from 'dayjs'
+import { format } from '@formkit/tempo'
 import { LOG_LEVEL, LOG_MASSAGE } from '../contents/enum'
+
+const formatDate = 'YYYY/MM/DD'
+const locale = 'Asia/Tokyo'
 
 /**
  * ログの出力
@@ -16,6 +19,5 @@ export const logger = (
 }
 
 const setTransports = () => {
-  // TODO：@formkit/tempoに変更
-  log.transports.file.fileName = dayjs(new Date()).format('YYYY-MM-DD')
+  log.transports.file.fileName = format({ date: new Date(), format: formatDate, tz: locale })
 }

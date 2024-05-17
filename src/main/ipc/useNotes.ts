@@ -1,9 +1,9 @@
 import { ensureDir, readFile, readdir, remove, stat, writeFile } from 'fs-extra'
 import { homedir } from 'os'
-import log from 'electron-log'
 
 /** utils */
 import { handleError } from '@main/utils/handler'
+import { logger } from '@main/utils/logger'
 
 /** enum */
 import {
@@ -31,7 +31,7 @@ export const useNotes = () => {
       readFile(`${rootDir}/${filename}.md`, { encoding: fileEncoding })
     )
     if (readFileError) {
-      log.error(`readNote Error: ${readFileError}`)
+      logger(LOG_LEVEL.ERROR, `readNote Error: ${readFileError}`)
       return
     }
 

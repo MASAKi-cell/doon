@@ -1,7 +1,7 @@
 /** ログ */
 export const LOG_LEVEL = {
   ERROR: 'error',
-  WARN: 'warning',
+  WARN: 'warn',
   INFO: 'info',
   QUSETION: 'question'
 } as const
