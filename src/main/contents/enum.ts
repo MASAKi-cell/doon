@@ -6,6 +6,17 @@ export const LOG_LEVEL = {
   QUSETION: 'question'
 } as const
 
+/** dialog */
+export const DIALOG_TYPE = {
+  WARNING: 'warning',
+  NONE: 'none',
+  INFO: 'info',
+  ERROR: 'error',
+  QUSETION: 'question'
+} as const
+
+export type DialogValue = (typeof DIALOG_TYPE)[keyof typeof DIALOG_TYPE]
+
 export const LOG_MASSAGE = {
   APP_START: 'アプリケーションが起動しました。',
   APP_FINISH: 'アプリケーションが閉じました。'
@@ -17,5 +28,8 @@ export const ERROR_MASSAGE = {
 
 export const APP_DIRECTORY_NAME = 'doon'
 export const fileEncoding = 'utf8'
-export const autoSavingTime = 3000
 export const welcomeNoteFilename = 'Welcome.md'
+
+export const autoSavingTime = 3000
+export const dialogDefaultId = 1
+export const dialogCancelId = 0

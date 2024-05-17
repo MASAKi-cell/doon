@@ -1,4 +1,5 @@
 import { ensureDir, readFile, readdir, remove, stat, writeFile } from 'fs-extra'
+import { dialog } from 'electron'
 import { homedir } from 'os'
 
 /** utils */
@@ -9,8 +10,12 @@ import { logger } from '@main/utils/logger'
 import {
   APP_DIRECTORY_NAME,
   LOG_LEVEL,
+  DIALOG_TYPE,
+  DialogValue,
   fileEncoding,
-  welcomeNoteFilename
+  welcomeNoteFilename,
+  dialogCancelId,
+  dialogDefaultId
 } from '@main/contents/enum'
 
 /** types */
@@ -38,8 +43,47 @@ export const useNotes = () => {
     return readFiles
   }
 
+  /** ファイル読み込み */
+  const writeNote: WriteNote = async (filename, content) => {
+    const rootDir = getHomeDir()
+    const [writeFiles, writeFileError] = await handleError(
+      writeFile(`${rootDir}/${filename}.md`, content, { encoding: fileEncoding })
+    )
+
+    if (writeFileError) {
+      logger(LOG_LEVEL.ERROR, `writeNote Error: ${writeFileError}`)
+      return
+    }
+
+    return writeFiles
+  }
+
+  /** ファイル削除 */
+  const deleteNote: DeleteNote = async (filename) => {
+    const rootDir = getHomeDir()
+
+    const { response } = await dialog.showMessageBox({
+      type: DIALOG_TYPE.WARNING as DialogValue,
+      title: 'Delete note',
+      message: `Are you sure you want to delete ${filename}?`,
+      buttons: ['Delete', 'Cancel'], // 0：Cancel, 1：Delete
+      defaultId: dialogDefaultId,
+      cancelId: dialogCancelId
+    })
+
+    const [_, deleteFileError] = await handleError(remove(`${rootDir}/${filename}.md`))
+
+    if (deleteFileError) {
+      logger(LOG_LEVEL.ERROR, `deleteNote Error: ${deleteFileError}`)
+      return false
+    }
+    return true
+  }
+
   return {
     getHomeDir,
-    readNote
+    readNote,
+    writeNote,
+    deleteNote
   }
 }
