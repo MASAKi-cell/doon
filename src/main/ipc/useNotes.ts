@@ -12,16 +12,16 @@ import {
   LOG_LEVEL,
   DIALOG_TYPE,
   DialogValue,
-  fileEncoding,
-  welcomeNoteFilename,
-  dialogCancelId,
-  dialogDefaultId
+  FILE_ENCODEING,
+  WELCOME_NOTE_FILE_NAME,
+  DIALOG_CANCEL_ID,
+  DIALOG_DEFAULT_ID
 } from '@main/contents/enum'
 
 /** types */
 import { CreateNote, DeleteNote, GetNotes, ReadNote, WriteNote } from '@main/contents/ipc'
 
-// TODO：typeORMの実装
+// TODO：typeORMに変更する
 export const useNotes = () => {
   /** 現在のディレクトリを取得 */
   const getHomeDir = () => {
@@ -33,7 +33,7 @@ export const useNotes = () => {
     const rootDir = getHomeDir()
 
     const [readFiles, readFileError] = await handleError(
-      readFile(`${rootDir}/${filename}.md`, { encoding: fileEncoding })
+      readFile(`${rootDir}/${filename}.md`, { encoding: FILE_ENCODEING })
     )
     if (readFileError) {
       logger(LOG_LEVEL.ERROR, `readNote Error: ${readFileError}`)
@@ -47,7 +47,7 @@ export const useNotes = () => {
   const writeNote: WriteNote = async (filename, content) => {
     const rootDir = getHomeDir()
     const [writeFiles, writeFileError] = await handleError(
-      writeFile(`${rootDir}/${filename}.md`, content, { encoding: fileEncoding })
+      writeFile(`${rootDir}/${filename}.md`, content, { encoding: FILE_ENCODEING })
     )
 
     if (writeFileError) {
@@ -67,9 +67,14 @@ export const useNotes = () => {
       title: 'Delete note',
       message: `Are you sure you want to delete ${filename}?`,
       buttons: ['Delete', 'Cancel'], // 0：Cancel, 1：Delete
-      defaultId: dialogDefaultId,
-      cancelId: dialogCancelId
+      defaultId: DIALOG_DEFAULT_ID,
+      cancelId: DIALOG_CANCEL_ID
     })
+
+    if (response === DIALOG_CANCEL_ID) {
+      console.info('Note deletion canceled')
+      return false
+    }
 
     const [_, deleteFileError] = await handleError(remove(`${rootDir}/${filename}.md`))
 

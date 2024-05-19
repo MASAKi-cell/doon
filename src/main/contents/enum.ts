@@ -27,9 +27,9 @@ export const ERROR_MASSAGE = {
 }
 
 export const APP_DIRECTORY_NAME = 'doon'
-export const fileEncoding = 'utf8'
-export const welcomeNoteFilename = 'Welcome.md'
+export const FILE_ENCODEING = 'utf8'
+export const WELCOME_NOTE_FILE_NAME = 'Welcome.md'
 
-export const autoSavingTime = 3000
-export const dialogDefaultId = 1
-export const dialogCancelId = 0
+export const AUTE_SAVING_TIME = 3000
+export const DIALOG_DEFAULT_ID = 1
+export const DIALOG_CANCEL_ID = 0
