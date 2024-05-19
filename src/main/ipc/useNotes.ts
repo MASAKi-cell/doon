@@ -19,7 +19,7 @@ import {
 } from '@main/contents/enum'
 
 /** types */
-import { CreateNote, DeleteNote, GetNotes, ReadNote, WriteNote } from '@main/contents/ipc'
+import { CreateNote, DeleteNote, GetNotes, NoteInfo, ReadNote, WriteNote } from '@main/contents/ipc'
 
 // TODO：typeORMに変更する
 export const useNotes = () => {
@@ -43,7 +43,21 @@ export const useNotes = () => {
     return readFiles
   }
 
-  /** ファイル読み込み */
+  /** ファイル情報の取得 */
+  const getFileInfo = async (filename: string): Promise<NoteInfo> => {
+    const [fileStats, fileStatsError] = await handleError(stat(`${getHomeDir()}/${filename}`))
+
+    if (fileStatsError) {
+      logger(LOG_LEVEL.ERROR, `fileStats Error: ${fileStatsError}`)
+    }
+
+    return {
+      title: filename.replace(/\.md$/, ''),
+      lastEditTime: new Date(fileStats!.mtimeMs)
+    }
+  }
+
+  /** ファイル書き込み */
   const writeNote: WriteNote = async (filename, content) => {
     const rootDir = getHomeDir()
     const [writeFiles, writeFileError] = await handleError(
@@ -56,6 +70,41 @@ export const useNotes = () => {
     }
 
     return writeFiles
+  }
+
+  /** ファイルの取得 */
+  const getNotes: GetNotes = async () => {
+    const rootDir = getHomeDir()
+    const [_, ensureDirError] = await handleError(ensureDir(rootDir))
+
+    if (ensureDirError) {
+      logger(LOG_LEVEL.ERROR, `ensureDir Error: ${ensureDirError}`)
+    }
+
+    const [notesFileNames, notesFileNamesError] = await handleError(
+      readdir(rootDir, {
+        encoding: FILE_ENCODEING,
+        withFileTypes: false
+      })
+    )
+
+    if (notesFileNamesError) {
+      logger(LOG_LEVEL.ERROR, `ensureDir Error: ${notesFileNamesError}`)
+    }
+
+    const notes = notesFileNames!.filter((fileName) => fileName.endsWith('.md'))
+
+    if (!notes.length) {
+      console.info('No notes found, creating a welcome note')
+
+      const content = await readFile(WELCOME_NOTE_FILE_NAME, { encoding: FILE_ENCODEING })
+
+      await writeFile(`${rootDir}/${WELCOME_NOTE_FILE_NAME}`, content, { encoding: FILE_ENCODEING })
+
+      notes.push(WELCOME_NOTE_FILE_NAME)
+    }
+
+    return Promise.all(notes.map((note: string) => getFileInfo(note)))
   }
 
   /** ファイル削除 */
@@ -82,11 +131,17 @@ export const useNotes = () => {
       logger(LOG_LEVEL.ERROR, `deleteNote Error: ${deleteFileError}`)
       return false
     }
+
+    console.info(`Deleting note: ${filename}`)
+    await remove(`${rootDir}/${filename}.md`)
+
     return true
   }
 
   return {
     getHomeDir,
+    getFileInfo,
+    getNotes,
     readNote,
     writeNote,
     deleteNote

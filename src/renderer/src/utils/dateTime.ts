@@ -13,14 +13,14 @@ const locale = 'Asia/Tokyo'
 /**
  * @returns yyyy年mm月dd日（曜日）
  */
-export const toJpString = (date: Date, style: DateStyle) => {
+export const toJpString = (date: Date, style: DateStyle): string => {
   return format(date, style)
 }
 
 /**
  * @returns YYYY/MM/DD
  */
-export const toStirngWithTz = (date: Date) => {
+export const toStirngWithTz = (date: Date): string => {
   return format({
     date,
     format: formatDate,
