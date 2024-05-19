@@ -72,7 +72,7 @@ export const useNotes = () => {
     return writeFiles
   }
 
-  /** ファイルの取得 */
+  /** 全ファイルの取得 */
   const getNotes: GetNotes = async () => {
     const rootDir = getHomeDir()
     const [_, ensureDirError] = await handleError(ensureDir(rootDir))
@@ -105,6 +105,11 @@ export const useNotes = () => {
     }
 
     return Promise.all(notes.map((note: string) => getFileInfo(note)))
+  }
+
+  /** ファイル作成 */
+  const createNote: CreateNote = async () => {
+    const rootDir = getHomeDir()
   }
 
   /** ファイル削除 */
@@ -144,6 +149,7 @@ export const useNotes = () => {
     getNotes,
     readNote,
     writeNote,
+    createNote,
     deleteNote
   }
 }
