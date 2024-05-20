@@ -1,6 +1,7 @@
 import { ensureDir, readFile, readdir, remove, stat, writeFile } from 'fs-extra'
 import { dialog } from 'electron'
 import { homedir } from 'os'
+import path from 'path'
 
 /** utils */
 import { handleError } from '@main/utils/handler'
@@ -20,7 +21,6 @@ import {
 
 /** types */
 import { CreateNote, DeleteNote, GetNotes, NoteInfo, ReadNote, WriteNote } from '@main/contents/ipc'
-import path from 'path'
 
 // TODO：typeORMに変更する
 export const useNotes = () => {
