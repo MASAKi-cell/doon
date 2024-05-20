@@ -20,6 +20,7 @@ import {
 
 /** types */
 import { CreateNote, DeleteNote, GetNotes, NoteInfo, ReadNote, WriteNote } from '@main/contents/ipc'
+import path from 'path'
 
 // TODO：typeORMに変更する
 export const useNotes = () => {
@@ -98,7 +99,6 @@ export const useNotes = () => {
       console.info('No notes found, creating a welcome note')
 
       const content = await readFile(WELCOME_NOTE_FILE_NAME, { encoding: FILE_ENCODEING })
-
       await writeFile(`${rootDir}/${WELCOME_NOTE_FILE_NAME}`, content, { encoding: FILE_ENCODEING })
 
       notes.push(WELCOME_NOTE_FILE_NAME)
@@ -110,6 +110,39 @@ export const useNotes = () => {
   /** ファイル作成 */
   const createNote: CreateNote = async () => {
     const rootDir = getHomeDir()
+    await ensureDir(rootDir)
+
+    const { filePath, canceled } = await dialog.showSaveDialog({
+      title: 'New note',
+      defaultPath: `${rootDir}/Untitled.md`,
+      buttonLabel: 'Create',
+      properties: ['showOverwriteConfirmation'],
+      showsTagField: false,
+      filters: [{ name: 'Markdown', extensions: ['md'] }]
+    })
+
+    if (canceled || !filePath) {
+      console.info('Note creation canceled')
+      return false
+    }
+
+    const { name: filename, dir: parentDir } = path.parse(filePath)
+
+    if (parentDir !== rootDir) {
+      await dialog.showMessageBox({
+        type: DIALOG_TYPE.ERROR,
+        title: 'Creation failed',
+        message: `All notes must be saved under ${rootDir}.
+        Avoid using other directories!`
+      })
+
+      return false
+    }
+
+    console.info(`Creating note: ${filePath}`)
+    await writeFile(filePath, '')
+
+    return filename
   }
 
   /** ファイル削除 */
