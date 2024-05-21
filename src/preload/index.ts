@@ -13,23 +13,23 @@ const sendPing = async (): Promise<void> => {
   return await ipcRenderer.send('ping')
 }
 
-const getNote = async (): Promise<GetNotes> => {
+const getNote = async (): Promise<ReturnType<GetNotes>> => {
   return await ipcRenderer.invoke('getNote')
 }
 
-const createNote = async (): Promise<CreateNote> => {
+const createNote = async (): Promise<ReturnType<CreateNote>> => {
   return ipcRenderer.invoke('createNote')
 }
 
-const deleteNote = async (): Promise<DeleteNote> => {
+const deleteNote = async (): Promise<ReturnType<DeleteNote>> => {
   return ipcRenderer.invoke('deleteNote')
 }
 
-const readNote = async (): Promise<ReadNote> => {
+const readNote = async (): Promise<ReturnType<ReadNote>> => {
   return ipcRenderer.invoke('readNote')
 }
 
-const writeNote = async (): Promise<WriteNote> => {
+const writeNote = async (): Promise<ReturnType<WriteNote>> => {
   return ipcRenderer.invoke('writeNote')
 }
 
@@ -42,18 +42,4 @@ export interface IElectronAPI {
   deleteNote: typeof deleteNote
   readNote: typeof readNote
   writeNote: typeof writeNote
-}
-
-try {
-  // Docs: https://electronjs.org/docs/api/context-bridge
-  contextBridge.exposeInMainWorld('electron', {
-    sendPing,
-    getNote,
-    createNote,
-    deleteNote,
-    readNote,
-    writeNote
-  })
-} catch (error) {
-  console.error(error)
 }
