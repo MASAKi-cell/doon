@@ -33,8 +33,7 @@ const writeNote = async (): Promise<WriteNote> => {
   return ipcRenderer.invoke('writeNote')
 }
 
-// NOTE:
-// https://www.electronjs.org/docs/latest/tutorial/context-isolation/#usage-with-typescript
+// Docs: https://www.electronjs.org/docs/latest/tutorial/context-isolation/#usage-with-typescript
 // contextBridgeに露出させるAPIを定義
 export interface IElectronAPI {
   sendPing: typeof sendPing
@@ -46,7 +45,15 @@ export interface IElectronAPI {
 }
 
 try {
-  contextBridge.exposeInMainWorld('electron', { sendPing })
+  // Docs: https://electronjs.org/docs/api/context-bridge
+  contextBridge.exposeInMainWorld('electron', {
+    sendPing,
+    getNote,
+    createNote,
+    deleteNote,
+    readNote,
+    writeNote
+  })
 } catch (error) {
   console.error(error)
 }
