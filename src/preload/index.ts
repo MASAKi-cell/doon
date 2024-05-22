@@ -9,10 +9,6 @@ if (!process.contextIsolated) {
   throw new Error(ERROR_MASSAGE.MUST_USE_CONTEXT_ISOLATION)
 }
 
-const sendPing = async (): Promise<void> => {
-  return await ipcRenderer.send('ping')
-}
-
 const getNote = async (): Promise<ReturnType<GetNotes>> => {
   return await ipcRenderer.invoke('getNote')
 }
@@ -36,10 +32,22 @@ const writeNote = async (): Promise<ReturnType<WriteNote>> => {
 // Docs: https://www.electronjs.org/docs/latest/tutorial/context-isolation/#usage-with-typescript
 // contextBridgeに露出させるAPIを定義
 export interface IElectronAPI {
-  sendPing: typeof sendPing
   getNote: typeof getNote
   createNote: typeof createNote
   deleteNote: typeof deleteNote
   readNote: typeof readNote
   writeNote: typeof writeNote
+}
+
+try {
+  // Docs: https://electronjs.org/docs/api/context-bridge
+  contextBridge.exposeInMainWorld('electron', {
+    getNote,
+    createNote,
+    deleteNote,
+    readNote,
+    writeNote
+  })
+} catch (error) {
+  console.error(error)
 }
