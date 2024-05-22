@@ -6,7 +6,7 @@ export const useNotes = () => {
   const getNotes = async () => {
     const notes = await window.electron.getNote()
 
-    return notes.sort((a, b) => b.lastEditTime - a.lastEditTime)
+    return notes.sort((a, b) => b.lastEditTime.getTime() - a.lastEditTime.getTime())
   }
 
   return { selectedNoteIndex, getNotes }
