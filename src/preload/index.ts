@@ -17,16 +17,16 @@ const createNote = async (): Promise<ReturnType<CreateNote>> => {
   return ipcRenderer.invoke('createNote')
 }
 
-const deleteNote = async (): Promise<ReturnType<DeleteNote>> => {
-  return ipcRenderer.invoke('deleteNote')
+const deleteNote = async (filename: string): Promise<ReturnType<DeleteNote>> => {
+  return ipcRenderer.invoke('deleteNote', filename)
 }
 
-const readNote = async (): Promise<ReturnType<ReadNote>> => {
-  return ipcRenderer.invoke('readNote')
+const readNote = async (filename: string): Promise<ReturnType<ReadNote>> => {
+  return ipcRenderer.invoke('readNote', filename)
 }
 
-const writeNote = async (): Promise<ReturnType<WriteNote>> => {
-  return ipcRenderer.invoke('writeNote')
+const writeNote = async (filename: string, context: string): Promise<ReturnType<WriteNote>> => {
+  return ipcRenderer.invoke('writeNote', filename, context)
 }
 
 // Docs: https://www.electronjs.org/docs/latest/tutorial/context-isolation/#usage-with-typescript

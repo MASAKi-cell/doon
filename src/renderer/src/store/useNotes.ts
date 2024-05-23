@@ -1,13 +1,28 @@
+import { unwrap } from 'jotai/utils'
 import { atom } from 'jotai'
 
-export const useNotes = () => {
-  const selectedNoteIndex = atom<number | null>(null)
+/** tyes */
+import { NoteInfo } from '@renderer/contents/note'
 
-  const getNotes = async () => {
+export const useNotes = () => {
+  const selectedNoteIndexAtom = atom<number | null>(null)
+
+  const getNotes = atom<Promise<NoteInfo[]>>(async () => {
     const notes = await window.electron.getNote()
 
     return notes.sort((a, b) => b.lastEditTime.getTime() - a.lastEditTime.getTime())
-  }
+  })
+  const notesAtom = unwrap(getNotes)
 
-  return { selectedNoteIndex, getNotes }
+  const selectedNote = atom(async (get) => {
+    const slectedNoteIndex = get(selectedNoteIndexAtom)
+    const notes = get(notesAtom)
+
+    if (!slectedNoteIndex || !notes) return
+    const selectedNote = notes[slectedNoteIndex]
+
+    const noteContent = await window.electron.readNote(selectedNote.title)
+  })
+
+  return { selectedNoteIndexAtom, getNotes }
 }
