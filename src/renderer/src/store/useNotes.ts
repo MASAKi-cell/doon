@@ -4,14 +4,15 @@ import { atom } from 'jotai'
 /** tyes */
 import { NoteContent, NoteInfo } from '@renderer/contents/note'
 
+// TODO: jotaiをテストする。
 export const useNotes = () => {
   const selectedNoteIndex = atom<number | null>(null)
 
   const getNotes = atom<Promise<NoteInfo[]>>(async () => {
     const notes = await window.electron.getNote()
-
     return notes.sort((a, b) => b.lastEditTime.getTime() - a.lastEditTime.getTime())
   })
+
   const notesAtom = unwrap(getNotes)
 
   /** note選択 */
@@ -19,9 +20,11 @@ export const useNotes = () => {
     const index = get(selectedNoteIndex)
     const notes = get(notesAtom)
 
-    if (!index || !notes) return
-    const selectedNote = notes[index]
+    if (!index || !notes) {
+      return
+    }
 
+    const selectedNote = notes[index]
     const noteContent = await window.electron.readNote(selectedNote.title)
 
     return { ...selectedNote, content: noteContent }
@@ -37,14 +40,77 @@ export const useNotes = () => {
       }
   )
 
-  /** noteの保存 */
-  const saveNote = atom(null, (get, set, newContent: NoteContent) => {})
+  /**
+   * noteの保存
+   */
+  const saveNote = atom(null, async (get, set, newContent: NoteContent) => {
+    const notes = get(notesAtom)
+    const selectedNote = get(selectedNoteAtom)
 
-  /** noteの新規作成 */
-  const creatNote = atom(null, async (get, set) => {})
+    if (!selectedNote || !notes) {
+      return
+    }
 
-  /** noteの削除 */
-  const deleteNote = atom(null, async (get, set) => {})
+    await window.electron.writeNote(selectedNote.title, newContent)
 
-  return { selectedNoteIndexAtom, getNotes }
+    set(
+      notesAtom,
+      notes.forEach((note) =>
+        note.title === selectedNote.title
+          ? {
+              ...note,
+              lastEditTime: Date.now()
+            }
+          : note
+      )
+    )
+  })
+
+  /**
+   * noteの新規作成
+   */
+  const creatNote = atom(null, async (get, set) => {
+    const notes = get(notesAtom)
+
+    if (!notes) {
+      return
+    }
+
+    const title = await window.electron.createNote()
+    if (!title) {
+      return
+    }
+
+    const newNote = {
+      title,
+      lastEditTime: new Date()
+    }
+    set(notesAtom, [newNote, ...notes.filter((note) => note.title !== newNote.title)])
+    set(selectedNoteIndex, 0)
+  })
+
+  /**
+   * noteの削除
+   */
+  const deleteNote = atom(null, async (get, set) => {
+    const notes = get(notesAtom)
+    const selectedNote = get(selectedNoteAtom)
+
+    if (!notes || !selectedNote) {
+      return
+    }
+
+    const isDeleted = await window.electron.deleteNote(selectedNote.title)
+
+    if (!isDeleted) {
+      return
+    }
+
+    set(
+      notesAtom,
+      notes.filter((note) => note.title !== selectedNote.title)
+    )
+  })
+
+  return { creatNote, saveNote, deleteNote }
 }
