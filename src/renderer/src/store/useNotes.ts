@@ -8,12 +8,12 @@ import { NoteContent, NoteInfo } from '@renderer/contents/note'
 export const useNotes = () => {
   const selectedNoteIndex = atom<number | null>(null)
 
-  const getNotes = atom<Promise<NoteInfo[]>>(async () => {
+  const getNotes = async () => {
     const notes = await window.electron.getNote()
     return notes.sort((a, b) => b.lastEditTime.getTime() - a.lastEditTime.getTime())
-  })
-
-  const notesAtom = unwrap(getNotes)
+  }
+  const notesAtomAsync = atom<NoteInfo[] | Promise<NoteInfo[]>>(getNotes())
+  const notesAtom = unwrap(notesAtomAsync)
 
   /** note選択 */
   const selectedNote = atom(async (get) => {
@@ -55,7 +55,7 @@ export const useNotes = () => {
 
     set(
       notesAtom,
-      notes.forEach((note) =>
+      notes.filter((note) =>
         note.title === selectedNote.title
           ? {
               ...note,
