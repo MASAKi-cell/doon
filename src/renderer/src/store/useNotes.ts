@@ -43,7 +43,7 @@ export const useNotes = () => {
   /**
    * noteの保存
    */
-  const saveNote = atom(null, async (get, set, newContent: NoteContent) => {
+  const handleSaveNote = atom(null, async (get, set, newContent: NoteContent) => {
     const notes = get(notesAtom)
     const selectedNote = get(selectedNoteAtom)
 
@@ -69,7 +69,7 @@ export const useNotes = () => {
   /**
    * noteの新規作成
    */
-  const creatNote = atom(null, async (get, set) => {
+  const handleCreatNote = atom(null, async (get, set) => {
     const notes = get(notesAtom)
 
     if (!notes) {
@@ -92,7 +92,7 @@ export const useNotes = () => {
   /**
    * noteの削除
    */
-  const deleteNote = atom(null, async (get, set) => {
+  const handleDeleteNote = atom(null, async (get, set) => {
     const notes = get(notesAtom)
     const selectedNote = get(selectedNoteAtom)
 
@@ -112,5 +112,15 @@ export const useNotes = () => {
     )
   })
 
-  return { creatNote, saveNote, deleteNote }
+  return {
+    /** variable */
+    notesAtom,
+    selectedNoteIndex,
+    selectedNoteAtom,
+
+    /** handle */
+    handleCreatNote,
+    handleSaveNote,
+    handleDeleteNote
+  }
 }
