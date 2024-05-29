@@ -4,7 +4,8 @@ import { atom } from 'jotai'
 /** tyes */
 import { NoteContent, NoteInfo } from '@renderer/contents/note'
 
-// TODO: jotaiをテストする。
+// TODO:jotaiをテストする。
+// TODO: Errorハンドリング
 export const useNotes = () => {
   const selectedNoteIndex = atom<number | null>(null)
 
