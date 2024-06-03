@@ -20,7 +20,7 @@ import {
 } from '@main/contents/enum'
 
 /** types */
-import { CreateNote, DeleteNote, GetNotes, NoteInfo, ReadNote, WriteNote } from '@main/contents/ipc'
+import { CreateNote, DeleteNote, GetNote, NoteInfo, ReadNote, WriteNote } from '@main/contents/ipc'
 
 // TODO：typeORMに変更する
 export const useNotes = () => {
@@ -74,7 +74,7 @@ export const useNotes = () => {
   }
 
   /** 全ファイルの取得 */
-  const getNotes: GetNotes = async () => {
+  const getNote: GetNote = async () => {
     const rootDir = getHomeDir()
     const [_, ensureDirError] = await handleError(ensureDir(rootDir))
 
@@ -179,7 +179,7 @@ export const useNotes = () => {
   return {
     getHomeDir,
     getFileInfo,
-    getNotes,
+    getNote,
     readNote,
     writeNote,
     createNote,

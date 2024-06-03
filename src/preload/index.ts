@@ -2,14 +2,14 @@ import { contextBridge, ipcRenderer } from 'electron'
 
 /** type */
 import { ERROR_MASSAGE } from '../main/contents/enum'
-import { CreateNote, DeleteNote, GetNotes, ReadNote, WriteNote } from '@main/contents/ipc'
+import { CreateNote, DeleteNote, GetNote, ReadNote, WriteNote } from '@main/contents/ipc'
 
 if (!process.contextIsolated) {
   // コンテキストが分離されていない場合
   throw new Error(ERROR_MASSAGE.MUST_USE_CONTEXT_ISOLATION)
 }
 
-const getNote = async (): Promise<ReturnType<GetNotes>> => {
+const getNote = async (): Promise<ReturnType<GetNote>> => {
   return await ipcRenderer.invoke('getNote')
 }
 

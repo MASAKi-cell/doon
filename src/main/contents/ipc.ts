@@ -7,7 +7,7 @@ export type NoteContent = string | undefined
 export type valueOf<T> = T[keyof T]
 
 /** Notes Types */
-export type GetNotes = () => Promise<NoteInfo[]>
+export type GetNote = () => Promise<NoteInfo[]>
 export type ReadNote = (title: NoteInfo['title']) => Promise<NoteContent>
 export type WriteNote = (title: NoteInfo['title'], content: NoteContent) => Promise<void>
 export type CreateNote = () => Promise<NoteInfo['title'] | false>
