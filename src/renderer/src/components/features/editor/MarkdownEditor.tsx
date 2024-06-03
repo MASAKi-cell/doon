@@ -1,34 +1,29 @@
-import { useState } from 'react'
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-import rehypeHighlight from 'rehype-highlight'
-import rehypeKatex from 'rehype-katex'
-import remarkMath from 'remark-math'
-import rehypeRaw from 'rehype-raw'
+import {
+  MDXEditor,
+  headingsPlugin,
+  listsPlugin,
+  markdownShortcutPlugin,
+  quotePlugin
+} from '@mdxeditor/editor'
 
-export const MarkdownEditor = (): JSX.Element => {
-  const [text, setText] = useState<string>('')
+/** hooks  */
+import { useNoteEditor } from '@renderer/hooks/index'
 
-  const handletext = (e) => {
-    setText(e.target.value)
+export const MarkdownEditor = () => {
+  const { editor, selectedNote, handleAutoSave, handleBlur } = useNoteEditor()
+
+  if (!selectedNote?.content) {
+    return null
   }
 
   return (
-    <div>
-      <textarea
-        id="markdown"
-        name="markdown"
-        rows={50}
-        cols={33}
-        onChange={handletext}
-        value={text}
-      ></textarea>
-      <ReactMarkdown
-        remarkPlugins={[remarkGfm, remarkMath]}
-        rehypePlugins={[rehypeHighlight, rehypeKatex, rehypeRaw]}
-      >
-        {text}
-      </ReactMarkdown>
-    </div>
+    <MDXEditor
+      ref={editor}
+      key={selectedNote.title}
+      markdown={selectedNote.content}
+      onChange={handleAutoSave}
+      onBlur={handleBlur}
+      plugins={[headingsPlugin(), listsPlugin(), quotePlugin(), markdownShortcutPlugin()]}
+    />
   )
 }
