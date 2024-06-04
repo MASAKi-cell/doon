@@ -8,7 +8,7 @@ export default defineConfig({
     resolve: {
       alias: {
         '@/main': resolve('src/main'),
-        '@/lib': resolve('src/main/lib')
+        '@/utils': resolve('src/main/utils')
       }
     }
   },
