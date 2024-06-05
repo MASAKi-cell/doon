@@ -1,5 +1,6 @@
 import { app, shell, BrowserWindow, ipcMain, crashReporter } from 'electron'
 import { join } from 'path'
+import './ipc'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer'
 import icon from '../../resources/icon.png?asset'

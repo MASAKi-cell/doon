@@ -1,1 +1,1 @@
-export { useNotes } from './useNotes'
+import './useNotes'

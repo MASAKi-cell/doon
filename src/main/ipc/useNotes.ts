@@ -1,5 +1,5 @@
 import { ensureDir, readFile, readdir, remove, stat, writeFile } from 'fs-extra'
-import { dialog } from 'electron'
+import { dialog, ipcMain } from 'electron'
 import { homedir } from 'os'
 import path from 'path'
 
@@ -21,6 +21,23 @@ import {
 
 /** types */
 import { CreateNote, DeleteNote, GetNote, NoteInfo, ReadNote, WriteNote } from '@main/contents/ipc'
+
+const getHomeDir = () => {
+  return `${homedir()}/${APP_DIRECTORY_NAME}`
+}
+
+ipcMain.handle('getNote', async (_, filename: string): Promise<NoteInfo> => {
+  const [fileStats, fileStatsError] = await handleError(stat(`${getHomeDir()}/${filename}`))
+
+  if (fileStatsError) {
+    logger(LOG_LEVEL.ERROR, `fileStats Error: ${fileStatsError}`)
+  }
+
+  return {
+    title: filename.replace(/\.md$/, ''),
+    lastEditTime: new Date(fileStats!.mtimeMs)
+  }
+})
 
 // TODO：typeORMに変更する
 export const useNotes = () => {
