@@ -20,13 +20,15 @@ import {
 } from '@main/contents/enum'
 
 /** types */
-import { CreateNote, DeleteNote, GetNote, NoteInfo, ReadNote, WriteNote } from '@main/contents/ipc'
+import { NoteContent, NoteInfo } from '@main/contents/ipc'
 
+// 現在のディレクトリを取得
 const getHomeDir = () => {
   return `${homedir()}/${APP_DIRECTORY_NAME}`
 }
 
-ipcMain.handle('getNote', async (_, filename: string): Promise<NoteInfo> => {
+// ファイル情報の取得
+const getFileInfo = async (filename: string): Promise<NoteInfo> => {
   const [fileStats, fileStatsError] = await handleError(stat(`${getHomeDir()}/${filename}`))
 
   if (fileStatsError) {
@@ -37,169 +39,137 @@ ipcMain.handle('getNote', async (_, filename: string): Promise<NoteInfo> => {
     title: filename?.replace(/\.md$/, ''),
     lastEditTime: fileStats ? new Date(fileStats.mtimeMs) : new Date()
   }
+}
+
+// 全ファイルの取得
+ipcMain.handle('getNote', async () => {
+  const rootDir = getHomeDir()
+  const [_, ensureDirError] = await handleError(ensureDir(rootDir))
+
+  if (ensureDirError) {
+    logger(LOG_LEVEL.ERROR, `ensureDir Error: ${ensureDirError}`)
+  }
+
+  const [notesFileNames, notesFileNamesError] = await handleError(
+    readdir(rootDir, {
+      encoding: FILE_ENCODEING,
+      withFileTypes: false
+    })
+  )
+
+  if (notesFileNamesError) {
+    logger(LOG_LEVEL.ERROR, `ensureDir Error: ${notesFileNamesError}`)
+  }
+
+  const notes = notesFileNames!.filter((fileName) => fileName.endsWith('.md'))
+
+  if (!notes.length) {
+    console.info('No notes found, creating a welcome note')
+
+    const content = await readFile(WELCOME_NOTE_FILE_NAME, { encoding: FILE_ENCODEING })
+    await writeFile(`${rootDir}/${WELCOME_NOTE_FILE_NAME}`, content, { encoding: FILE_ENCODEING })
+
+    notes.push(WELCOME_NOTE_FILE_NAME)
+  }
+
+  return Promise.all(notes.map((note: string) => getFileInfo(note)))
 })
 
-// TODO：typeORMに変更する
-export const useNotes = () => {
-  /** 現在のディレクトリを取得 */
-  const getHomeDir = () => {
-    return `${homedir()}/${APP_DIRECTORY_NAME}`
+// ファイル読み込み
+ipcMain.handle('readNote', async (_, filename: string): Promise<NoteContent> => {
+  const rootDir = getHomeDir()
+
+  const [readFiles, readFileError] = await handleError(
+    readFile(`${rootDir}/${filename}.md`, { encoding: FILE_ENCODEING })
+  )
+  if (readFileError) {
+    logger(LOG_LEVEL.ERROR, `readNote Error: ${readFileError}`)
+    return
   }
 
-  /** ファイル読み込み */
-  const readNote: ReadNote = async (filename: string) => {
-    const rootDir = getHomeDir()
+  return readFiles
+})
 
-    const [readFiles, readFileError] = await handleError(
-      readFile(`${rootDir}/${filename}.md`, { encoding: FILE_ENCODEING })
-    )
-    if (readFileError) {
-      logger(LOG_LEVEL.ERROR, `readNote Error: ${readFileError}`)
-      return
-    }
+// ファイル書き込み
+ipcMain.handle('writeNote', async (_, filename: string, content: string): Promise<void> => {
+  const rootDir = getHomeDir()
+  const [writeFiles, writeFileError] = await handleError(
+    writeFile(`${rootDir}/${filename}.md`, content, { encoding: FILE_ENCODEING })
+  )
 
-    return readFiles
+  if (writeFileError) {
+    logger(LOG_LEVEL.ERROR, `writeNote Error: ${writeFileError}`)
+    return
   }
 
-  /** ファイル情報の取得 */
-  const getFileInfo = async (filename: string): Promise<NoteInfo> => {
-    const [fileStats, fileStatsError] = await handleError(stat(`${getHomeDir()}/${filename}`))
+  return writeFiles
+})
 
-    if (fileStatsError) {
-      logger(LOG_LEVEL.ERROR, `fileStats Error: ${fileStatsError}`)
-    }
+// ファイル作成
+ipcMain.handle('createNote', async (): Promise<NoteInfo['title'] | false> => {
+  const rootDir = getHomeDir()
+  await ensureDir(rootDir)
 
-    return {
-      title: filename?.replace(/\.md$/, ''),
-      lastEditTime: fileStats ? new Date(fileStats.mtimeMs) : new Date()
-    }
+  const { filePath, canceled } = await dialog.showSaveDialog({
+    title: 'New note',
+    defaultPath: `${rootDir}/Untitled.md`,
+    buttonLabel: 'Create',
+    properties: ['showOverwriteConfirmation'],
+    showsTagField: false,
+    filters: [{ name: 'Markdown', extensions: ['md'] }]
+  })
+
+  if (canceled || !filePath) {
+    console.info('Note creation canceled')
+    return false
   }
 
-  /** ファイル書き込み */
-  const writeNote: WriteNote = async (filename, content) => {
-    const rootDir = getHomeDir()
-    const [writeFiles, writeFileError] = await handleError(
-      writeFile(`${rootDir}/${filename}.md`, content, { encoding: FILE_ENCODEING })
-    )
+  const { name: filename, dir: parentDir } = path.parse(filePath)
 
-    if (writeFileError) {
-      logger(LOG_LEVEL.ERROR, `writeNote Error: ${writeFileError}`)
-      return
-    }
-
-    return writeFiles
-  }
-
-  /** 全ファイルの取得 */
-  const getNote: GetNote = async () => {
-    const rootDir = getHomeDir()
-    const [_, ensureDirError] = await handleError(ensureDir(rootDir))
-
-    if (ensureDirError) {
-      logger(LOG_LEVEL.ERROR, `ensureDir Error: ${ensureDirError}`)
-    }
-
-    const [notesFileNames, notesFileNamesError] = await handleError(
-      readdir(rootDir, {
-        encoding: FILE_ENCODEING,
-        withFileTypes: false
-      })
-    )
-
-    if (notesFileNamesError) {
-      logger(LOG_LEVEL.ERROR, `ensureDir Error: ${notesFileNamesError}`)
-    }
-
-    const notes = notesFileNames!.filter((fileName) => fileName.endsWith('.md'))
-
-    if (!notes.length) {
-      console.info('No notes found, creating a welcome note')
-
-      const content = await readFile(WELCOME_NOTE_FILE_NAME, { encoding: FILE_ENCODEING })
-      await writeFile(`${rootDir}/${WELCOME_NOTE_FILE_NAME}`, content, { encoding: FILE_ENCODEING })
-
-      notes.push(WELCOME_NOTE_FILE_NAME)
-    }
-
-    return Promise.all(notes.map((note: string) => getFileInfo(note)))
-  }
-
-  /** ファイル作成 */
-  const createNote: CreateNote = async () => {
-    const rootDir = getHomeDir()
-    await ensureDir(rootDir)
-
-    const { filePath, canceled } = await dialog.showSaveDialog({
-      title: 'New note',
-      defaultPath: `${rootDir}/Untitled.md`,
-      buttonLabel: 'Create',
-      properties: ['showOverwriteConfirmation'],
-      showsTagField: false,
-      filters: [{ name: 'Markdown', extensions: ['md'] }]
+  if (parentDir !== rootDir) {
+    await dialog.showMessageBox({
+      type: DIALOG_TYPE.ERROR,
+      title: 'Creation failed',
+      message: `All notes must be saved under ${rootDir}.
+      Avoid using other directories!`
     })
 
-    if (canceled || !filePath) {
-      console.info('Note creation canceled')
-      return false
-    }
-
-    const { name: filename, dir: parentDir } = path.parse(filePath)
-
-    if (parentDir !== rootDir) {
-      await dialog.showMessageBox({
-        type: DIALOG_TYPE.ERROR,
-        title: 'Creation failed',
-        message: `All notes must be saved under ${rootDir}.
-        Avoid using other directories!`
-      })
-
-      return false
-    }
-
-    console.info(`Creating note: ${filePath}`)
-    await writeFile(filePath, '')
-
-    return filename
+    return false
   }
 
-  /** ファイル削除 */
-  const deleteNote: DeleteNote = async (filename) => {
-    const rootDir = getHomeDir()
+  console.info(`Creating note: ${filePath}`)
+  await writeFile(filePath, '')
 
-    const { response } = await dialog.showMessageBox({
-      type: DIALOG_TYPE.WARNING as DialogValue,
-      title: 'Delete note',
-      message: `Are you sure you want to delete ${filename}?`,
-      buttons: ['Delete', 'Cancel'], // 0：Cancel, 1：Delete
-      defaultId: DIALOG_DEFAULT_ID,
-      cancelId: DIALOG_CANCEL_ID
-    })
+  return filename
+})
 
-    if (response === DIALOG_CANCEL_ID) {
-      console.info('Note deletion canceled')
-      return false
-    }
+// ファイル削除
+ipcMain.handle('deleteNote', async (_, filename: string): Promise<boolean> => {
+  const rootDir = getHomeDir()
 
-    const [_, deleteFileError] = await handleError(remove(`${rootDir}/${filename}.md`))
+  const { response } = await dialog.showMessageBox({
+    type: DIALOG_TYPE.WARNING as DialogValue,
+    title: 'Delete note',
+    message: `Are you sure you want to delete ${filename}?`,
+    buttons: ['Delete', 'Cancel'], // 0：Cancel, 1：Delete
+    defaultId: DIALOG_DEFAULT_ID,
+    cancelId: DIALOG_CANCEL_ID
+  })
 
-    if (deleteFileError) {
-      logger(LOG_LEVEL.ERROR, `deleteNote Error: ${deleteFileError}`)
-      return false
-    }
-
-    console.info(`Deleting note: ${filename}`)
-    await remove(`${rootDir}/${filename}.md`)
-
-    return true
+  if (response === DIALOG_CANCEL_ID) {
+    console.info('Note deletion canceled')
+    return false
   }
 
-  return {
-    getHomeDir,
-    getFileInfo,
-    getNote,
-    readNote,
-    writeNote,
-    createNote,
-    deleteNote
+  const [__, deleteFileError] = await handleError(remove(`${rootDir}/${filename}.md`))
+
+  if (deleteFileError) {
+    logger(LOG_LEVEL.ERROR, `deleteNote Error: ${deleteFileError}`)
+    return false
   }
-}
+
+  console.info(`Deleting note: ${filename}`)
+  await remove(`${rootDir}/${filename}.md`)
+
+  return true
+})
