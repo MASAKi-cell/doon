@@ -34,8 +34,8 @@ ipcMain.handle('getNote', async (_, filename: string): Promise<NoteInfo> => {
   }
 
   return {
-    title: filename.replace(/\.md$/, ''),
-    lastEditTime: new Date(fileStats!.mtimeMs)
+    title: filename?.replace(/\.md$/, ''),
+    lastEditTime: fileStats ? new Date(fileStats.mtimeMs) : new Date()
   }
 })
 
@@ -70,8 +70,8 @@ export const useNotes = () => {
     }
 
     return {
-      title: filename.replace(/\.md$/, ''),
-      lastEditTime: new Date(fileStats!.mtimeMs)
+      title: filename?.replace(/\.md$/, ''),
+      lastEditTime: fileStats ? new Date(fileStats.mtimeMs) : new Date()
     }
   }
 
