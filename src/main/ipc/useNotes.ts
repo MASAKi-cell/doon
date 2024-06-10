@@ -20,7 +20,7 @@ import {
 } from '@main/contents/enum'
 
 /** types */
-import { NoteContent, NoteInfo } from '@main/contents/ipc'
+import { GetNote, NoteContent, NoteInfo } from '@main/contents/ipc'
 
 // 現在のディレクトリを取得
 const getHomeDir = () => {
@@ -44,7 +44,7 @@ const getFileInfo = async (filename: string): Promise<NoteInfo> => {
 /**
  * 全ファイルの取得
  */
-ipcMain.handle('getNote', async () => {
+ipcMain.handle('getNote', async (): Promise<ReturnType<GetNote>> => {
   const rootDir = getHomeDir()
   const [_, ensureDirError] = await handleError(ensureDir(rootDir))
 
@@ -63,7 +63,7 @@ ipcMain.handle('getNote', async () => {
     logger(LOG_LEVEL.ERROR, `ensureDir Error: ${notesFileNamesError}`)
   }
 
-  const notes = notesFileNames!.filter((fileName) => fileName.endsWith('.md'))
+  const notes: string[] = notesFileNames!.filter((fileName) => fileName.endsWith('.md'))
 
   if (!notes.length) {
     console.info('No notes found, creating a welcome note')

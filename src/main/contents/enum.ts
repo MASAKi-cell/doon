@@ -26,7 +26,7 @@ export const ERROR_MASSAGE = {
   MUST_USE_CONTEXT_ISOLATION: 'browser Windowではコンテキストの分離が必須です。'
 }
 
-export const APP_DIRECTORY_NAME = 'doon'
+export const APP_DIRECTORY_NAME = 'Desktop/doon'
 export const FILE_ENCODEING = 'utf8'
 export const WELCOME_NOTE_FILE_NAME = 'Welcome.md'
 
