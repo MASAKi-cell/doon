@@ -1,31 +1,27 @@
 import { ensureDir, readFile, readdir, remove, stat, writeFile } from 'fs-extra'
 import { dialog, ipcMain } from 'electron'
-import { homedir } from 'os'
 import path from 'path'
 
 /** utils */
 import { handleError } from '@main/utils/handler'
 import { logger } from '@main/utils/logger'
+import { getHomeDir } from '@main/utils/index'
 
 /** enum */
 import {
-  APP_DIRECTORY_NAME,
   LOG_LEVEL,
   DIALOG_TYPE,
   DialogValue,
   FILE_ENCODEING,
   WELCOME_NOTE_FILE_NAME,
   DIALOG_CANCEL_ID,
-  DIALOG_DEFAULT_ID
+  DIALOG_DEFAULT_ID,
+  ERROR_MASSAGE,
+  INFO_MASSAGE
 } from '@main/contents/enum'
 
 /** types */
 import { GetNote, NoteContent, NoteInfo } from '@main/contents/ipc'
-
-// 現在のディレクトリを取得
-const getHomeDir = () => {
-  return `${homedir()}/${APP_DIRECTORY_NAME}`
-}
 
 // ファイル情報の取得
 const getFileInfo = async (filename: string): Promise<NoteInfo> => {
@@ -42,7 +38,7 @@ const getFileInfo = async (filename: string): Promise<NoteInfo> => {
 }
 
 /**
- * 全ファイルの取得
+ * ファイル取得
  */
 ipcMain.handle('getNote', async (): Promise<ReturnType<GetNote>> => {
   const rootDir = getHomeDir()
@@ -63,15 +59,14 @@ ipcMain.handle('getNote', async (): Promise<ReturnType<GetNote>> => {
     logger(LOG_LEVEL.ERROR, `ensureDir Error: ${notesFileNamesError}`)
   }
 
-  const notes: string[] = notesFileNames!.filter((fileName) => fileName.endsWith('.md'))
+  let notes: string[] = notesFileNames!.filter((fileName) => fileName.endsWith('.md'))
 
   if (!notes.length) {
-    console.info('No notes found, creating a welcome note')
+    logger(LOG_LEVEL.INFO, INFO_MASSAGE.NO_NOTE_FOUND)
 
     const content = await readFile(WELCOME_NOTE_FILE_NAME, { encoding: FILE_ENCODEING })
     await writeFile(`${rootDir}/${WELCOME_NOTE_FILE_NAME}`, content, { encoding: FILE_ENCODEING })
-
-    notes.push(WELCOME_NOTE_FILE_NAME)
+    notes = [...WELCOME_NOTE_FILE_NAME]
   }
 
   return Promise.all(notes.map((note: string) => getFileInfo(note)))
@@ -128,7 +123,7 @@ ipcMain.handle('createNote', async (): Promise<NoteInfo['title'] | false> => {
   })
 
   if (canceled || !filePath) {
-    console.info('Note creation canceled')
+    logger(LOG_LEVEL.INFO, INFO_MASSAGE.NOTE_CANCELED)
     return false
   }
 
