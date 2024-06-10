@@ -41,7 +41,9 @@ const getFileInfo = async (filename: string): Promise<NoteInfo> => {
   }
 }
 
-// 全ファイルの取得
+/**
+ * 全ファイルの取得
+ */
 ipcMain.handle('getNote', async () => {
   const rootDir = getHomeDir()
   const [_, ensureDirError] = await handleError(ensureDir(rootDir))
@@ -75,7 +77,9 @@ ipcMain.handle('getNote', async () => {
   return Promise.all(notes.map((note: string) => getFileInfo(note)))
 })
 
-// ファイル読み込み
+/**
+ * ファイル読み込み
+ */
 ipcMain.handle('readNote', async (_, filename: string): Promise<NoteContent> => {
   const rootDir = getHomeDir()
 
@@ -90,7 +94,9 @@ ipcMain.handle('readNote', async (_, filename: string): Promise<NoteContent> => 
   return readFiles
 })
 
-// ファイル書き込み
+/**
+ * ファイル書き込み
+ */
 ipcMain.handle('writeNote', async (_, filename: string, content: string): Promise<void> => {
   const rootDir = getHomeDir()
   const [writeFiles, writeFileError] = await handleError(
@@ -105,7 +111,9 @@ ipcMain.handle('writeNote', async (_, filename: string, content: string): Promis
   return writeFiles
 })
 
-// ファイル作成
+/**
+ * ファイル新規作成
+ */
 ipcMain.handle('createNote', async (): Promise<NoteInfo['title'] | false> => {
   const rootDir = getHomeDir()
   await ensureDir(rootDir)
@@ -143,7 +151,9 @@ ipcMain.handle('createNote', async (): Promise<NoteInfo['title'] | false> => {
   return filename
 })
 
-// ファイル削除
+/**
+ * ファイル削除
+ */
 ipcMain.handle('deleteNote', async (_, filename: string): Promise<boolean> => {
   const rootDir = getHomeDir()
 
