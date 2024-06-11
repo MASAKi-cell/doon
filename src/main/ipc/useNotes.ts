@@ -16,7 +16,6 @@ import {
   WELCOME_NOTE_FILE_NAME,
   DIALOG_CANCEL_ID,
   DIALOG_DEFAULT_ID,
-  ERROR_MASSAGE,
   INFO_MASSAGE
 } from '@main/contents/enum'
 
