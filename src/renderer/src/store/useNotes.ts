@@ -4,8 +4,8 @@ import { atom } from 'jotai'
 /** tyes */
 import { NoteContent, NoteInfo } from '@renderer/contents/note'
 
-// TODO:jotaiをテストする。
-// TODO: Errorハンドリング
+// TODO:jotaiをテストする
+// TODO： IDで判別させる
 export const useNotes = () => {
   const selectedNoteIndex = atom<number | null>(null)
 
@@ -14,9 +14,11 @@ export const useNotes = () => {
     return notes.sort((a, b) => b.lastEditTime.getTime() - a.lastEditTime.getTime())
   }
   const notesAtomAsync = atom<NoteInfo[] | Promise<NoteInfo[]>>(getNote())
-  const notesAtom = unwrap(notesAtomAsync)
+  const notesAtom = unwrap(notesAtomAsync, (prev) => prev ?? [])
 
-  /** note選択 */
+  /**
+   * note選択
+   */
   const selectedNote = atom(async (get) => {
     const index = get(selectedNoteIndex)
     const notes = get(notesAtom)
@@ -36,8 +38,8 @@ export const useNotes = () => {
     (prev) =>
       prev ?? {
         title: '',
-        content: '',
-        lastEditTime: Date.now()
+        lastEditTime: Date.now(),
+        content: ''
       }
   )
 
