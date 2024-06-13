@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeHighlight from 'rehype-highlight'
@@ -6,11 +5,14 @@ import rehypeKatex from 'rehype-katex'
 import remarkMath from 'remark-math'
 import rehypeRaw from 'rehype-raw'
 
-export const MarkdownEditor = (): JSX.Element => {
-  const [text, setText] = useState<string>('')
+/** hooks  */
+import { useNoteEditor } from '@renderer/hooks/index'
 
-  const handletext = (e) => {
-    setText(e.target.value)
+export const MarkdownEditor = (): JSX.Element => {
+  const { editor, selectedNote, handleAutoSave, handleBlur } = useNoteEditor()
+
+  const onChange = (e: any) => {
+    handleAutoSave(e)
   }
 
   return (
@@ -20,14 +22,15 @@ export const MarkdownEditor = (): JSX.Element => {
         name="markdown"
         rows={50}
         cols={33}
-        onChange={handletext}
-        value={text}
+        onChange={onChange}
+        onBlur={handleBlur}
+        value={selectedNote?.content}
       ></textarea>
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[rehypeHighlight, rehypeKatex, rehypeRaw]}
       >
-        {text}
+        {selectedNote?.content}
       </ReactMarkdown>
     </div>
   )
