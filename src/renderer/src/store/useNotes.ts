@@ -5,7 +5,7 @@ import { atom } from 'jotai'
 import { NoteContent, NoteInfo } from '@renderer/contents/note'
 
 // TODO:jotaiをテストする
-// TODO： IDで判別させる
+// TODO： Idで判別させる
 export const useNotes = () => {
   const selectedNoteIndex = atom<number | null>(null)
 
