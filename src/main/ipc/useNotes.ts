@@ -68,7 +68,7 @@ ipcMain.handle('getNote', async (): Promise<ReturnType<GetNote>> => {
     notes = [...WELCOME_NOTE_FILE_NAME]
   }
 
-  return Promise.all(notes.map((note: string) => getFileInfo(note)))
+  return Promise.all(notes.map(getFileInfo))
 })
 
 /**
