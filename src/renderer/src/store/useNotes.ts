@@ -11,7 +11,6 @@ export const useNotes = () => {
 
   const getNote = async () => {
     const notes = await window.electron.getNote()
-    debugger
     return notes.sort((a, b) => b.lastEditTime.getTime() - a.lastEditTime.getTime())
   }
   const notesAtomAsync = atom<NoteInfo[] | Promise<NoteInfo[]>>(getNote())

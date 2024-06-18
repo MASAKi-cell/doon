@@ -31,7 +31,7 @@ export const INFO_MASSAGE = {
   NOTE_CANCELED: 'Note creation canceled'
 }
 
-export const APP_DIRECTORY_NAME = 'Desktop/doon'
+export const APP_DIRECTORY_NAME = 'Desktop/doon/resources/'
 export const FILE_ENCODEING = 'utf8'
 export const WELCOME_NOTE_FILE_NAME = 'Welcome.md'
 

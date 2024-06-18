@@ -10,7 +10,9 @@
   },
   "files.exclude": {
     "**/node_modules": true,
-    "**/*.module.scss.d.ts": true
+    "**/*.module.scss.d.ts": true,
+    "**/out": true,
+    "**/build": true
   },
   "editor.codeActionsOnSave": {
     "source.fixAll.stylelint": "explicit"

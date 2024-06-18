@@ -7,6 +7,8 @@ import { handleError } from '@main/utils/handler'
 import { logger } from '@main/utils/logger'
 import { getHomeDir } from '@main/utils/index'
 
+import welcomeNote from '@main/resources/welcomeNote.md?asset'
+
 /** enum */
 import {
   LOG_LEVEL,
@@ -58,13 +60,16 @@ ipcMain.handle('getNote', async (): Promise<ReturnType<GetNote>> => {
     logger(LOG_LEVEL.ERROR, `ensureDir Error: ${notesFileNamesError}`)
   }
 
-  let notes: string[] = notesFileNames!.filter((fileName) => fileName.endsWith('.md'))
-
+  let notes: string[] = notesFileNames!.filter(
+    (fileName) => fileName.endsWith('.md') && !fileName.startsWith('README')
+  )
   if (!notes.length) {
     logger(LOG_LEVEL.INFO, INFO_MASSAGE.NO_NOTE_FOUND)
 
-    const content = await readFile(WELCOME_NOTE_FILE_NAME, { encoding: FILE_ENCODEING })
-    await writeFile(`${rootDir}/${WELCOME_NOTE_FILE_NAME}`, content, { encoding: FILE_ENCODEING })
+    const content = await readFile(welcomeNote, { encoding: FILE_ENCODEING })
+    await writeFile(`${rootDir}/${WELCOME_NOTE_FILE_NAME}`, content, {
+      encoding: FILE_ENCODEING
+    })
     notes = [...WELCOME_NOTE_FILE_NAME]
   }
 
@@ -94,7 +99,7 @@ ipcMain.handle('readNote', async (_, filename: string): Promise<NoteContent> => 
 ipcMain.handle('writeNote', async (_, filename: string, content: string): Promise<void> => {
   const rootDir = getHomeDir()
   const [writeFiles, writeFileError] = await handleError(
-    writeFile(`${rootDir}/${filename}.md`, content, { encoding: FILE_ENCODEING })
+    writeFile(`${rootDir}/resources/${filename}.md`, content, { encoding: FILE_ENCODEING })
   )
 
   if (writeFileError) {

@@ -3,7 +3,7 @@ import { join } from 'path'
 import './ipc'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer'
-import icon from '../../resources/icon.png?asset'
+import icon from '@main/resources/icon.png?asset'
 
 /** type */
 import { LOG_LEVEL, LOG_MASSAGE } from './contents/enum'
