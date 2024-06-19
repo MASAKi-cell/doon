@@ -37,6 +37,7 @@ export const useNoteEditor = () => {
   return {
     editor,
     selectedNote,
+
     /** handle */
     handleBlur,
     handleAutoSave

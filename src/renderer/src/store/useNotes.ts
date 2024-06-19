@@ -7,7 +7,7 @@ import { NoteContent, NoteInfo } from '@renderer/contents/note'
 // TODO:jotaiをテストする
 // TODO： Idで判別させる
 export const useNotes = () => {
-  const selectedNoteIndex = atom<number | null>(null)
+  const selectedNoteIndex = atom<number | null>(0)
 
   const getNote = async () => {
     const notes = await window.electron.getNote()
@@ -19,12 +19,12 @@ export const useNotes = () => {
   /**
    * note選択
    */
-  const selectedNote = atom(async (get) => {
+  const selectedNoteAtom = atom(async (get) => {
     const index = get(selectedNoteIndex)
     const notes = get(notesAtom)
 
     if (index === null || !notes.length) {
-      return
+      return null
     }
 
     const selectedNote = notes[index]
@@ -33,22 +33,12 @@ export const useNotes = () => {
     return { ...selectedNote, content: noteContent }
   })
 
-  const selectedNoteAtom = unwrap(
-    selectedNote,
-    (prev) =>
-      prev ?? {
-        title: '',
-        lastEditTime: Date.now(),
-        content: ''
-      }
-  )
-
   /**
    * noteの保存
    */
   const handleSaveNote = atom(null, async (get, set, newContent: NoteContent) => {
     const notes = get(notesAtom)
-    const selectedNote = get(selectedNoteAtom)
+    const selectedNote = get(unwrap(selectedNoteAtom, (prev) => prev))
 
     if (!selectedNote || !notes) {
       return
@@ -97,7 +87,7 @@ export const useNotes = () => {
    */
   const handleDeleteNote = atom(null, async (get, set) => {
     const notes = get(notesAtom)
-    const selectedNote = get(selectedNoteAtom)
+    const selectedNote = get(unwrap(selectedNoteAtom, (prev) => prev))
 
     if (!notes || !selectedNote) {
       return
