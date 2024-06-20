@@ -3,18 +3,22 @@ import { ComponentPropsWithoutRef } from 'react'
 /** components */
 import { NotePreview } from '@renderer/components/features/noteList/NotePreview'
 
-/** mock */
-import { NotesMock } from '@renderer/mock/notesMock'
-
 /** styles */
 import styles from '@renderer/styles/features/noteList/NoteList.module.scss'
+
+/** hooks */
+import { useNotesList } from '@renderer/hooks/index'
 
 type NoteListProps = ComponentPropsWithoutRef<'ul'> & {
   onSelect?: () => void
 }
 
 export const NoteList = ({ onSelect, ...props }: NoteListProps) => {
-  if (!NotesMock.length) {
+  const { notes, selectedNoteIndex, handleNoteSelect } = useNotesList({ onSelect })
+
+  if (!notes) return null
+
+  if (!notes.length) {
     return (
       <ul {...props}>
         <span>No Notes Yet!</span>
@@ -24,8 +28,13 @@ export const NoteList = ({ onSelect, ...props }: NoteListProps) => {
 
   return (
     <ul {...props} className={styles.wrapper}>
-      {NotesMock.map((note, i) => (
-        <NotePreview key={i + note.title + note.lastEditTime} {...note} />
+      {notes.map((note, i) => (
+        <NotePreview
+          key={i + note.title + note.lastEditTime}
+          isActive={selectedNoteIndex === i}
+          onClick={handleNoteSelect(i)}
+          {...note}
+        />
       ))}
     </ul>
   )

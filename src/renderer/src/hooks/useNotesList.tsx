@@ -2,8 +2,8 @@ import { useNotes } from '@renderer/store/index'
 import { useAtom, useAtomValue } from 'jotai'
 
 export const useNotesList = ({ onSelect }: { onSelect?: () => void }) => {
-  const { selectedNoteIndex, selectedNoteAtom } = useNotes()
-  const notes = useAtomValue(selectedNoteAtom)
+  const { selectedNoteIndex, notesAtom } = useNotes()
+  const notes = useAtomValue(notesAtom)
   const [selectedIndex, setSelectedNoteIndex] = useAtom(selectedNoteIndex)
 
   const handleNoteSelect = (index: number) => {
