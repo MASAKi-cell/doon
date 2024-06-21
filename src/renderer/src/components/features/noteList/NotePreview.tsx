@@ -16,7 +16,6 @@ export type NotePreviewProps = ComponentPropsWithoutRef<'div'> &
 
 export const NotePreview = ({
   title,
-  content,
   lastEditTime,
   isActive = false,
   ...props

@@ -41,7 +41,7 @@ const getFileInfo = async (filename: string): Promise<NoteInfo> => {
 /**
  * ファイル取得
  */
-ipcMain.handle('getNote', async (): Promise<ReturnType<GetNote>> => {
+ipcMain.handle('getNotes', async (): Promise<ReturnType<GetNote>> => {
   const rootDir = getHomeDir()
   const [_, ensureDirError] = await handleError(ensureDir(rootDir))
 

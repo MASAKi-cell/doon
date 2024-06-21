@@ -7,13 +7,13 @@ import { NoteContent, NoteInfo } from '@renderer/contents/note'
 // TODO:jotaiをテストする
 // TODO： Idで判別させる
 export const useNotes = () => {
-  const selectedNoteIndex = atom<number | null>(0)
-
-  const getNote = async () => {
-    const notes = await window.electron.getNote()
+  const getNotes = async () => {
+    const notes = await window.electron.getNotes()
     return notes.sort((a, b) => b.lastEditTime.getTime() - a.lastEditTime.getTime())
   }
-  const notesAtomAsync = atom<NoteInfo[] | Promise<NoteInfo[]>>(getNote())
+
+  const selectedNoteIndex = atom<number | null>(0)
+  const notesAtomAsync = atom<NoteInfo[] | Promise<NoteInfo[]>>(getNotes())
   const notesAtom = unwrap(notesAtomAsync, (prev) => prev ?? [])
 
   /**
