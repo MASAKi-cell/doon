@@ -16,7 +16,7 @@ type NoteListProps = ComponentPropsWithoutRef<'ul'> & {
 export const NoteList = ({ onSelect, ...props }: NoteListProps) => {
   const { notes, selectedIndex, handleNoteSelect } = useNotesList({ onSelect })
 
-  if (!notes.length) {
+  if (!notes?.length) {
     return (
       <ul {...props}>
         <span>No Notes</span>
@@ -26,7 +26,7 @@ export const NoteList = ({ onSelect, ...props }: NoteListProps) => {
 
   return (
     <ul {...props} className={styles.wrapper}>
-      {notes.map((note, i) => (
+      {notes?.map((note, i) => (
         <NotePreview
           key={i + note.title + note.lastEditTime}
           isActive={selectedIndex === i}

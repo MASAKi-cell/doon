@@ -3,16 +3,15 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { useRef } from 'react'
 
 /** store */
-import { useNotes } from '@renderer/store/index'
+import { saveNoteAtom, selectedNoteAtom } from '@renderer/store/useNotes'
 
 /** types */
 import { NoteContent } from '@renderer/contents/note'
 import { AUTE_SAVING_TIME } from '@renderer/contents/enums'
 
 export const useNoteEditor = () => {
-  const { selectedNoteAtom, handleSaveNote } = useNotes()
   const selectedNote = useAtomValue(selectedNoteAtom)
-  const saveNote = useSetAtom(handleSaveNote)
+  const saveNote = useSetAtom(saveNoteAtom)
   const editor = useRef<MDXEditorMethods>(null)
 
   const handleAutoSave = async (content: NoteContent): Promise<void> => {
