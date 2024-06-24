@@ -23,12 +23,12 @@ const selectedNoteAtomAsync = atom(async (get) => {
   const notes = get(notesAtom)
   const index = get(selectedNoteIndexAtom)
 
-  if (index === null || !notes) {
+  if (!notes) {
     return null
   }
 
-  const selectedNote = notes[index]
-  const noteContent = await window.electron.readNote(selectedNote.title)
+  const selectedNote = notes[index ?? 1]
+  const noteContent = await window.electron.readNote(selectedNote?.title)
 
   return {
     ...selectedNote,
