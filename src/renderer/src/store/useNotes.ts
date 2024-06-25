@@ -105,12 +105,6 @@ export const deleteNoteAtom = atom(null, async (get, set) => {
     return
   }
 
-  const isDeleted = await window.electron.deleteNote(selectedNote.title)
-
-  if (!isDeleted) {
-    return
-  }
-
   set(
     notesAtom,
     notes.filter((note) => note.title !== selectedNote.title)
