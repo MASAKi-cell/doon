@@ -4,7 +4,7 @@ import {
   Sidebar,
   Content,
   TopBar,
-  AddButtonsRow,
+  ActionButtonsRow,
   NoteList,
   MarkdownEditor,
   NoteTitle
@@ -20,7 +20,7 @@ function App(): JSX.Element {
       <RootLayout className={styles.wrapper}>
         {/* sidebar */}
         <Sidebar className={styles.sidebar}>
-          <AddButtonsRow className={styles.button} />
+          <ActionButtonsRow className={styles.button} />
           <NoteList />
         </Sidebar>
 

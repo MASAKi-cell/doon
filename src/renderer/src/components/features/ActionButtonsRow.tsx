@@ -3,7 +3,7 @@ import { ComponentPropsWithoutRef } from 'react'
 /** components */
 import { DeleteNoteButton, NewNoteButton } from '@renderer/components/features/button/index'
 
-export const AddButtonsRow = ({ ...props }: ComponentPropsWithoutRef<'div'>) => {
+export const ActionButtonsRow = ({ ...props }: ComponentPropsWithoutRef<'div'>) => {
   return (
     <div {...props}>
       <NewNoteButton />

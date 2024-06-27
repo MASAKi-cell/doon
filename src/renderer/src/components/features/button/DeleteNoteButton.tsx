@@ -1,5 +1,5 @@
 /** components */
-import { AddButton, AddButtonProps } from '@renderer/components/features/button/AddButton'
+import { ActionButton, ActionButtonProps } from '@renderer/components/features/button/ActionButton'
 import delete_icon from '@renderer/assets/delete_icon.svg'
 import { useAtomValue, useSetAtom } from 'jotai'
 
@@ -9,7 +9,7 @@ import { deleteNoteAtom, selectedNoteAtom } from '@renderer/store/useNotes'
 /** scss */
 import style from '@renderer/styles/features/button/deleteNoteButton.module.scss'
 
-export const DeleteNoteButton = ({ ...props }: AddButtonProps) => {
+export const DeleteNoteButton = ({ ...props }: ActionButtonProps) => {
   const deleteNote = useSetAtom(deleteNoteAtom)
   const selectedNote = useAtomValue(selectedNoteAtom)
   const handleDelete = async () => {
@@ -26,8 +26,8 @@ export const DeleteNoteButton = ({ ...props }: AddButtonProps) => {
   }
 
   return (
-    <AddButton onClick={handleDelete} {...props}>
+    <ActionButton onClick={handleDelete} {...props}>
       <img src={delete_icon} className={style.wrapper} />
-    </AddButton>
+    </ActionButton>
   )
 }

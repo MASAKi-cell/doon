@@ -73,15 +73,9 @@ export const saveNoteAtom = atom(null, (get, set) => {
 /**
  * noteの新規作成
  */
-export const createEmptyNoteAtom = atom(null, async (get, set) => {
+export const createNoteAtom = atom(null, async (get, set, title: string) => {
   const notes = get(notesAtom)
   if (!notes) {
-    return
-  }
-
-  const title = await window.electron.createNote()
-
-  if (!title) {
     return
   }
 

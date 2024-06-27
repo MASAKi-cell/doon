@@ -1,14 +1,30 @@
+import { useSetAtom } from 'jotai'
+
 /** components */
-import { AddButton, AddButtonProps } from '@renderer/components/features/button/AddButton'
+import { ActionButton, ActionButtonProps } from '@renderer/components/features/button/ActionButton'
+
+/** store */
+import { createNoteAtom } from '@renderer/store/useNotes'
 
 /** scss */
 import style from '@renderer/styles/features/button/newNoteButton.module.scss'
 import newNote_icon from '@renderer/assets/newNote_icon.svg'
 
-export const NewNoteButton = ({ ...props }: AddButtonProps) => {
+export const NewNoteButton = ({ ...props }: ActionButtonProps) => {
+  const createNote = useSetAtom(createNoteAtom)
+  const handleAddNote = async () => {
+    const title = await window.electron.createNote()
+
+    if (!title) {
+      return
+    }
+
+    createNote(title)
+  }
+
   return (
-    <AddButton {...props}>
+    <ActionButton onClick={handleAddNote} {...props}>
       <img src={newNote_icon} className={style.wrapper} />
-    </AddButton>
+    </ActionButton>
   )
 }
