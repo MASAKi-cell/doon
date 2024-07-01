@@ -30,7 +30,7 @@ export const NoteList = ({ onSelect, ...props }: NoteListProps) => {
         <NotePreview
           key={i + note.title + note.lastEditTime}
           isActive={selectedIndex === i}
-          onClick={handleNoteSelect(i)}
+          onClick={() => handleNoteSelect(i)}
           {...note}
         />
       ))}
