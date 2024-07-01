@@ -10,10 +10,10 @@ import { deleteNoteAtom, selectedNoteAtom } from '@renderer/store/useNotes'
 import style from '@renderer/styles/features/button/deleteNoteButton.module.scss'
 
 export const DeleteNoteButton = ({ ...props }: ActionButtonProps) => {
-  const handleDelete = async () => {
-    const deleteNote = useSetAtom(deleteNoteAtom)
-    const selectedNote = useAtomValue(selectedNoteAtom)
+  const deleteNote = useSetAtom(deleteNoteAtom)
+  const selectedNote = useAtomValue(selectedNoteAtom)
 
+  const handleDelete = async () => {
     if (!selectedNote) {
       return
     }
