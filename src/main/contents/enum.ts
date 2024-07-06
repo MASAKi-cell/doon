@@ -36,5 +36,5 @@ export const FILE_ENCODEING = 'utf8'
 export const WELCOME_NOTE_FILE_NAME = 'Welcome.md'
 
 export const AUTE_SAVING_TIME = 3000
-export const DIALOG_DEFAULT_ID = 1
-export const DIALOG_CANCEL_ID = 0
+export const DIALOG_DEFAULT_ID = 0
+export const DIALOG_CANCEL_ID = 1

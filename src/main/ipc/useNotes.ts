@@ -160,7 +160,7 @@ ipcMain.handle('deleteNote', async (_, filename: string): Promise<boolean> => {
     type: DIALOG_TYPE.WARNING as DialogValue,
     title: 'Delete note',
     message: `Are you sure you want to delete ${filename}?`,
-    buttons: ['Delete', 'Cancel'], // 0：Cancel, 1：Delete
+    buttons: ['Delete', 'Cancel'], // 0：Delete, 1：Cancel
     defaultId: DIALOG_DEFAULT_ID,
     cancelId: DIALOG_CANCEL_ID
   })
