@@ -99,7 +99,7 @@ ipcMain.handle('readNote', async (_, filename: string): Promise<NoteContent> => 
 ipcMain.handle('writeNote', async (_, filename: string, content: string): Promise<void> => {
   const rootDir = getHomeDir()
   const [writeFiles, writeFileError] = await handleError(
-    writeFile(`${rootDir}/resources/${filename}.md`, content, { encoding: FILE_ENCODEING })
+    writeFile(`${rootDir}/${filename}.md`, content, { encoding: FILE_ENCODEING })
   )
 
   if (writeFileError) {

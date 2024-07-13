@@ -1,3 +1,6 @@
+import { ChangeEvent } from 'react'
+
+/** ReactMarkdown */
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeHighlight from 'rehype-highlight'
@@ -9,10 +12,13 @@ import rehypeRaw from 'rehype-raw'
 import { useNoteEditor } from '@renderer/hooks/index'
 
 export const MarkdownEditor = (): JSX.Element => {
-  const { editor, selectedNote, handleAutoSave, handleBlur } = useNoteEditor()
+  const { selectedNote, handleAutoSave, handleBlur } = useNoteEditor()
 
-  const onChange = (e: any) => {
-    handleAutoSave(e)
+  const onChange = (e: ChangeEvent) => {
+    if (!(e.target instanceof HTMLTextAreaElement)) {
+      return
+    }
+    handleAutoSave(e.target.value)
   }
 
   return (

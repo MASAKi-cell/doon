@@ -18,12 +18,15 @@ export const useNoteEditor = () => {
     if (!content) {
       return
     }
-    setTimeout(async () => {
-      if (selectedNote) {
-        await window.electron.writeNote(selectedNote.title, content)
-        saveNote(), AUTE_SAVING_TIME
-      }
-    })
+
+    if (selectedNote?.title) {
+      await window.electron.writeNote(selectedNote.title, content)
+      setTimeout(async () => {
+        if (selectedNote) {
+          saveNote(), AUTE_SAVING_TIME
+        }
+      })
+    }
   }
 
   const handleBlur = async (): Promise<void> => {
