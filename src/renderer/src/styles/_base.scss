@@ -41,6 +41,14 @@ textarea {
   -webkit-app-region: no-drag;
 }
 
+ul {
+  -webkit-app-region: no-drag;
+}
+
+header {
+  -webkit-app-region: drag;
+}
+
 hr {
   display: block;
   height: 1px;
