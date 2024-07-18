@@ -28,6 +28,7 @@
     "@electron-toolkit/utils": "^3.0.0",
     "@formkit/tempo": "^0.1.1",
     "@mdxeditor/editor": "^3.4.0",
+    "clsx": "^2.1.1",
     "electron-log": "^5.1.4",
     "electron-reload": "^2.0.0-alpha.1",
     "electron-updater": "^6.1.7",

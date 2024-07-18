@@ -14,7 +14,7 @@ import { useNoteEditor } from '@renderer/hooks/index'
 export const MarkdownEditor = (): JSX.Element => {
   const { selectedNote, handleAutoSave, handleBlur } = useNoteEditor()
 
-  const onChange = (e: ChangeEvent) => {
+  const onChange = (e: ChangeEvent): void => {
     if (!(e.target instanceof HTMLTextAreaElement)) {
       return
     }

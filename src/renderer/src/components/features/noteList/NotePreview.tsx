@@ -1,4 +1,5 @@
 import { ComponentPropsWithoutRef } from 'react'
+import { clsx } from 'clsx'
 
 /** utils */
 import { toStirngWithTz } from '@renderer/utils/dateTime'
@@ -21,7 +22,7 @@ export const NotePreview = ({
   ...props
 }: NotePreviewProps) => {
   return (
-    <div {...props} className={styles.wrapper}>
+    <div {...props} className={clsx(styles.wrapper, isActive && styles.active)}>
       <h3>{title}</h3>
       <span>{toStirngWithTz(lastEditTime)}</span>
     </div>

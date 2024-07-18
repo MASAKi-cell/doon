@@ -12,8 +12,8 @@ import newNote_icon from '@renderer/assets/newNote_icon.svg'
 
 export const NewNoteButton = ({ ...props }: ActionButtonProps) => {
   const createNote = useSetAtom(createNoteAtom)
-  const handleAddNote = async () => {
-    const title = await window.electron.createNote()
+  const handleAddNote = async (): Promise<void> => {
+    const title: string | false = await window.electron.createNote()
 
     if (!title) {
       return

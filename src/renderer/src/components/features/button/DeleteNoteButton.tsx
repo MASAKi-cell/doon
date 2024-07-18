@@ -13,11 +13,11 @@ export const DeleteNoteButton = ({ ...props }: ActionButtonProps) => {
   const deleteNote = useSetAtom(deleteNoteAtom)
   const selectedNote = useAtomValue(selectedNoteAtom)
 
-  const handleDelete = async () => {
+  const handleDelete = async (): Promise<void> => {
     if (!selectedNote) {
       return
     }
-    const isDeleted = await window.electron.deleteNote(selectedNote.title)
+    const isDeleted: boolean = await window.electron.deleteNote(selectedNote.title)
 
     if (!isDeleted) {
       return

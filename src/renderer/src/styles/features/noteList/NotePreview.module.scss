@@ -1,4 +1,12 @@
+@use '@renderer/styles/libs/functions/index' as *;
+
 .wrapper {
   padding-top: 6px;
   padding-bottom: 6px;
+}
+
+.active {
+  background-color: p('gold', 'd1');
+  border-radius: 3px;
+  opacity: 0.9;
 }
