@@ -1,5 +1,6 @@
 import { ensureDir, readFile, readdir, remove, stat, writeFile } from 'fs-extra'
 import { dialog, ipcMain } from 'electron'
+import { v7 as uuidv7 } from 'uuid'
 import path from 'path'
 
 /** utils */
@@ -25,15 +26,22 @@ import {
 import { GetNote, NoteContent, NoteInfo } from '@main/contents/ipc'
 
 // ファイル情報の取得
-const getFileInfo = async (filename: string): Promise<NoteInfo> => {
+const getFileInfo = async (uuid: string): Promise<NoteInfo> => {
+  const filename = `${uuid}.md`
   const [fileStats, fileStatsError] = await handleError(stat(`${getHomeDir()}/${filename}`))
 
   if (fileStatsError) {
     logger(LOG_LEVEL.ERROR, `fileStats Error: ${fileStatsError}`)
+    return {
+      title: filename?.replace(/\.md$/, ''),
+      uuid: uuidv7(), // uuidを新規作成
+      lastEditTime: new Date() // デフォルトの最終編集日時
+    }
   }
 
   return {
     title: filename?.replace(/\.md$/, ''),
+    uuid,
     lastEditTime: fileStats ? new Date(fileStats.mtimeMs) : new Date()
   }
 }

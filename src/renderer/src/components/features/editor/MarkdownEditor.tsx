@@ -1,12 +1,13 @@
-import { ChangeEvent } from 'react'
+import styles from '@renderer/styles/features/editor/markdownEditor.module.scss'
 
-/** ReactMarkdown */
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-import rehypeHighlight from 'rehype-highlight'
-import rehypeKatex from 'rehype-katex'
-import remarkMath from 'remark-math'
-import rehypeRaw from 'rehype-raw'
+/** tMarkdown */
+import {
+  MDXEditor,
+  headingsPlugin,
+  listsPlugin,
+  markdownShortcutPlugin,
+  quotePlugin
+} from '@mdxeditor/editor'
 
 /** hooks  */
 import { useNoteEditor } from '@renderer/hooks/index'
@@ -14,30 +15,20 @@ import { useNoteEditor } from '@renderer/hooks/index'
 export const MarkdownEditor = (): JSX.Element => {
   const { selectedNote, handleAutoSave, handleBlur } = useNoteEditor()
 
-  const onChange = (e: ChangeEvent): void => {
-    if (!(e.target instanceof HTMLTextAreaElement)) {
-      return
-    }
-    handleAutoSave(e.target.value)
+  const onChange = (markdown: string): void => {
+    handleAutoSave(markdown)
   }
 
   return (
-    <div>
-      <textarea
-        id="markdown"
-        name="markdown"
-        rows={50}
-        cols={33}
+    <section>
+      <MDXEditor
+        className={styles.wrapper}
+        key={selectedNote ? selectedNote.title : ''}
+        markdown={selectedNote?.content ? selectedNote.content : ''}
         onChange={onChange}
         onBlur={handleBlur}
-        value={selectedNote?.content}
-      ></textarea>
-      <ReactMarkdown
-        remarkPlugins={[remarkGfm, remarkMath]}
-        rehypePlugins={[rehypeHighlight, rehypeKatex, rehypeRaw]}
-      >
-        {selectedNote?.content}
-      </ReactMarkdown>
-    </div>
+        plugins={[headingsPlugin(), listsPlugin(), quotePlugin(), markdownShortcutPlugin()]}
+      />
+    </section>
   )
 }
