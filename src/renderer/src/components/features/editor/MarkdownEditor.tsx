@@ -6,14 +6,15 @@ import {
   headingsPlugin,
   listsPlugin,
   markdownShortcutPlugin,
-  quotePlugin
+  quotePlugin,
+  thematicBreakPlugin
 } from '@mdxeditor/editor'
 
 /** hooks  */
 import { useNoteEditor } from '@renderer/hooks/index'
 
 export const MarkdownEditor = (): JSX.Element => {
-  const { selectedNote, handleAutoSave, handleBlur } = useNoteEditor()
+  const { editor, selectedNote, handleAutoSave, handleBlur } = useNoteEditor()
 
   const onChange = (markdown: string): void => {
     handleAutoSave(markdown)
@@ -22,12 +23,19 @@ export const MarkdownEditor = (): JSX.Element => {
   return (
     <section>
       <MDXEditor
+        ref={editor}
         className={styles.wrapper}
         key={selectedNote ? selectedNote.title : ''}
         markdown={selectedNote?.content ? selectedNote.content : ''}
         onChange={onChange}
         onBlur={handleBlur}
-        plugins={[headingsPlugin(), listsPlugin(), quotePlugin(), markdownShortcutPlugin()]}
+        plugins={[
+          headingsPlugin(),
+          listsPlugin(),
+          quotePlugin(),
+          markdownShortcutPlugin(),
+          thematicBreakPlugin()
+        ]}
       />
     </section>
   )

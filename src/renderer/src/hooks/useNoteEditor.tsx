@@ -34,7 +34,8 @@ export const useNoteEditor = () => {
       return
     }
 
-    await saveNote()
+    const content = editor.current?.getMarkdown()
+    if (!!content) await window.electron.writeNote(selectedNote.title, content)
   }
 
   return {
