@@ -5,7 +5,7 @@
     "outDir": "./dist/main",
     "lib": ["es2021","esnext"],
     "noImplicitAny": true,
-    "sourceMap": true
+    "sourceMap": true,
   },
   "include": ["src/main/**/*"],
   "exclude": ["src/renderer/**/*"]

@@ -6,10 +6,6 @@ export const ormconfig: DataSourceOptions = {
   database: 'database.sqlite',
   entities: [`${path.join(__dirname, '/model')}/*.js`],
   migrations: [`${path.join(__dirname, '/migrations')}/*.js`],
-  cli: {
-    entitiesDir: `${path.join(__dirname, '/model')}`,
-    migrationsDir: `${path.join(__dirname, '/migrations')}`
-  },
-  migrationsRun: true,
+  migrationsRun: true, // マイグレーション同時実行
   synchronize: false
 }

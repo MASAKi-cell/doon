@@ -5,6 +5,8 @@
     "composite": true,
     "types": ["electron-vite/node"],
     "baseUrl": ".",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "paths": {
       "@renderer/*": [
         "src/renderer/src/*"
