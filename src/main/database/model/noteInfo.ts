@@ -4,11 +4,11 @@ import { NoteInfo } from '@main/contents/ipc'
 @Entity()
 export class NoteInfoModel implements NoteInfo {
   @PrimaryGeneratedColumn('uuid')
-  uuid: string
+  uuid!: string
 
   @Column()
-  title: string
+  title!: string
 
   @Column('datetime')
-  lastEditTime: Date
+  lastEditTime!: Date
 }

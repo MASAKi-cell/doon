@@ -1,4 +1,5 @@
 import { app, shell, BrowserWindow, ipcMain, crashReporter } from 'electron'
+import { autoUpdater } from 'electron-updater'
 import { join } from 'path'
 import './ipc'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
@@ -48,6 +49,9 @@ function createWindow(): void {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
+
+  //自動アップデート
+  autoUpdater.checkForUpdates()
 }
 
 // クラッシュレポート
