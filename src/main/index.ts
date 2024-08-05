@@ -5,6 +5,7 @@ import './ipc'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer'
 import icon from '@main/resources/icon.png?asset'
+import Database from '@main/database/index'
 
 /** type */
 import { LOG_LEVEL, LOG_MASSAGE } from './contents/enum'
@@ -92,6 +93,10 @@ app.whenReady().then(() => {
 
     app.quit()
   }
+})
+
+app.on('will-finish-launching', async (): Promise<void> => {
+  await Database.createConnection()
 })
 
 // NOTE: ウィンドウが全部閉じられたらアプリを終了
