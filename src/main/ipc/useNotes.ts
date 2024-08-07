@@ -6,7 +6,7 @@ import path from 'path'
 /** utils */
 import { handleError } from '@main/utils/handler'
 import { logger } from '@main/utils/logger'
-import { getHomeDir } from '@main/utils/index'
+import { getResourcesDir } from '@main/utils/index'
 
 import welcomeNote from '@main/resources/welcomeNote.md?asset'
 
@@ -28,7 +28,7 @@ import { GetNote, NoteContent, NoteInfo } from '@main/contents/ipc'
 // ファイル情報の取得
 const getFileInfo = async (uuid: string): Promise<NoteInfo> => {
   const filename = `${uuid}.md`
-  const [fileStats, fileStatsError] = await handleError(stat(`${getHomeDir()}/${filename}`))
+  const [fileStats, fileStatsError] = await handleError(stat(`${getResourcesDir()}/${filename}`))
 
   if (fileStatsError) {
     logger(LOG_LEVEL.ERROR, `fileStats Error: ${fileStatsError}`)
@@ -50,7 +50,7 @@ const getFileInfo = async (uuid: string): Promise<NoteInfo> => {
  * ファイル取得
  */
 ipcMain.handle('getNotes', async (): Promise<ReturnType<GetNote>> => {
-  const rootDir = getHomeDir()
+  const rootDir = getResourcesDir()
   const [_, ensureDirError] = await handleError(ensureDir(rootDir))
 
   if (ensureDirError) {
@@ -88,7 +88,7 @@ ipcMain.handle('getNotes', async (): Promise<ReturnType<GetNote>> => {
  * ファイル読み込み
  */
 ipcMain.handle('readNote', async (_, filename: string): Promise<NoteContent> => {
-  const rootDir = getHomeDir()
+  const rootDir = getResourcesDir()
 
   const [readFiles, readFileError] = await handleError(
     readFile(`${rootDir}/${filename}.md`, { encoding: FILE_ENCODEING })
@@ -105,7 +105,7 @@ ipcMain.handle('readNote', async (_, filename: string): Promise<NoteContent> => 
  * ファイル書き込み
  */
 ipcMain.handle('writeNote', async (_, filename: string, content: string): Promise<void> => {
-  const rootDir = getHomeDir()
+  const rootDir = getResourcesDir()
   const [writeFiles, writeFileError] = await handleError(
     writeFile(`${rootDir}/${filename}.md`, content, { encoding: FILE_ENCODEING })
   )
@@ -122,7 +122,7 @@ ipcMain.handle('writeNote', async (_, filename: string, content: string): Promis
  * ファイル新規作成
  */
 ipcMain.handle('createNote', async (): Promise<NoteInfo['title'] | false> => {
-  const rootDir = getHomeDir()
+  const rootDir = getResourcesDir()
   await ensureDir(rootDir)
 
   const { filePath, canceled } = await dialog.showSaveDialog({
@@ -162,7 +162,7 @@ ipcMain.handle('createNote', async (): Promise<NoteInfo['title'] | false> => {
  * ファイル削除
  */
 ipcMain.handle('deleteNote', async (_, filename: string): Promise<boolean> => {
-  const rootDir = getHomeDir()
+  const rootDir = getResourcesDir()
 
   const { response } = await dialog.showMessageBox({
     type: DIALOG_TYPE.WARNING as DialogValue,

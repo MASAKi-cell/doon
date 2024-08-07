@@ -7,3 +7,7 @@ import { APP_DIRECTORY_NAME } from '@main/contents/enum'
 export const getHomeDir = () => {
   return `${homedir()}/${APP_DIRECTORY_NAME}`
 }
+
+export const getResourcesDir = () => {
+  return `${getHomeDir()}/resources`
+}
