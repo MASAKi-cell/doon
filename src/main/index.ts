@@ -4,7 +4,7 @@ import { join } from 'path'
 import './ipc'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer'
-import icon from '@main/resources/icon.png?asset'
+import icon from '@main/assets/icon.png?asset'
 import Database from '@main/database/index'
 
 /** type */
@@ -96,6 +96,7 @@ app.whenReady().then(() => {
 })
 
 app.on('will-finish-launching', async (): Promise<void> => {
+  // DB接続
   await Database.createConnection()
 })
 

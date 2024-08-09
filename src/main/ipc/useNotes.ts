@@ -33,15 +33,15 @@ const getFileInfo = async (uuid: string): Promise<NoteInfo> => {
   if (fileStatsError) {
     logger(LOG_LEVEL.ERROR, `fileStats Error: ${fileStatsError}`)
     return {
-      title: filename?.replace(/\.md$/, ''),
       uuid: uuidv7(), // uuidを新規作成
+      title: filename?.replace(/\.md$/, ''),
       lastEditTime: new Date() // デフォルトの最終編集日時
     }
   }
 
   return {
-    title: filename?.replace(/\.md$/, ''),
     uuid,
+    title: filename?.replace(/\.md$/, ''),
     lastEditTime: fileStats ? new Date(fileStats.mtimeMs) : new Date()
   }
 }
