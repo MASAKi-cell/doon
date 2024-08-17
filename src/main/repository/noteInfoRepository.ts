@@ -8,8 +8,13 @@ export const getNoteInfo = async () => {
   const connection = await Database.createConnection()
 }
 
-export const readNoteInfo = async () => {
+export const readNotesInfo = async (): Promise<NoteInfoModel[]> => {
   const connection = await Database.createConnection()
+  return await connection
+    .getRepository(NoteInfoModel)
+    .createQueryBuilder('noteInfo')
+    .select()
+    .getMany()
 }
 
 export const writeNoteInfo = async () => {

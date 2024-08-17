@@ -1,6 +1,6 @@
 export type NoteInfo = {
-  title: string
   uuid: string
+  title: string
   lastEditTime: Date
 }
 
