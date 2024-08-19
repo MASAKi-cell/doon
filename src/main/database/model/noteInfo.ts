@@ -6,7 +6,7 @@ export class NoteInfoModel implements NoteInfo {
   @PrimaryGeneratedColumn('uuid')
   uuid!: string
 
-  @Column()
+  @Column('text', { nullable: false })
   title!: string
 
   @Column('datetime')
