@@ -51,8 +51,10 @@ function createWindow(): void {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
 
-  //自動アップデート
-  autoUpdater.checkForUpdates()
+  // 自動アップデート
+  if (!is.dev) {
+    autoUpdater.checkForUpdates()
+  }
 }
 
 // クラッシュレポート
