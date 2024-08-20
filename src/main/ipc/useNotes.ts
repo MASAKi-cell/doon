@@ -3,11 +3,15 @@ import { dialog, ipcMain } from 'electron'
 import { v7 as uuidv7 } from 'uuid'
 import path from 'path'
 
+/** repository */
+import { readNotesInfo, writeNoteInfo } from '@main/repository/noteInfoRepository'
+
 /** utils */
 import { handleError } from '@main/utils/handler'
 import { logger } from '@main/utils/logger'
 import { getResourcesDir } from '@main/utils/index'
 
+/** asset */
 import welcomeNote from '@main/resources/welcomeNote.md?asset'
 
 /** enum */
