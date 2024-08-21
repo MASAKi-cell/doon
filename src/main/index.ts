@@ -111,6 +111,11 @@ app.on('window-all-closed', async (): Promise<void> => {
   }
 })
 
+// DB接続の終了
+app.on('will-quit', (): void => {
+  Database.close()
+})
+
 const isTheLock = app.requestSingleInstanceLock()
 
 // NOTE: 既にアプリが起動されていたら、新規に起動したアプリを終了

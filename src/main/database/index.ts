@@ -5,7 +5,23 @@ import { ormconfig } from '@main/database/typeorm'
  * DB初期化処理
  */
 export default class Database {
-  public static async createConnection() {
-    return new DataSource(ormconfig).initialize()
+  private static _conn?: DataSource
+
+  public static async createConnection(): Promise<DataSource> {
+    if (!this._conn) {
+      this._conn = new DataSource(ormconfig)
+      await this._conn.initialize()
+    }
+    return this._conn
+  }
+
+  public static async close(): Promise<void> {
+    if (!this._conn) {
+      return
+    }
+    if (this._conn && this._conn.isInitialized) {
+      await this._conn.destroy()
+    }
+    this._conn = undefined
   }
 }
