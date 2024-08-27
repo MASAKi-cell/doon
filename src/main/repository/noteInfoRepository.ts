@@ -4,9 +4,7 @@ import { NoteInfoModel } from '@main/database/model/noteInfo'
 /** types */
 import { NoteInfo } from '@main/contents/ipc'
 
-export const getNoteInfo = async () => {
-  const connection = await Database.createConnection()
-}
+export const getNoteInfo = async () => {}
 
 export const readNotesInfo = async (): Promise<NoteInfoModel[]> => {
   const connection = await Database.createConnection()
@@ -33,10 +31,6 @@ export const saveNoteInfo = async (noteInfo: NoteInfo) => {
   connection.getRepository(NoteInfoModel).save(noteInfo)
 }
 
-export const createNoteInfo = async () => {
-  const connection = await Database.createConnection()
-}
+export const createNoteInfo = async () => {}
 
-export const deleteNoteOInfo = async () => {
-  const connection = await Database.createConnection()
-}
+export const deleteNoteOInfo = async () => {}

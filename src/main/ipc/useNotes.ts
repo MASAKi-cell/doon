@@ -61,6 +61,21 @@ ipcMain.handle('getNotes', async (): Promise<ReturnType<GetNote>> => {
     logger(LOG_LEVEL.ERROR, `ensureDir Error: ${ensureDirError}`)
   }
 
+  const [notesFile, notesFileError] = await handleError(readNotesInfo())
+
+  if (notesFileError) {
+    logger(LOG_LEVEL.ERROR, `ensureDir Error: ${notesFileError}`)
+  }
+
+  if (!notesFile?.length) {
+    logger(LOG_LEVEL.INFO, INFO_MASSAGE.NO_NOTE_FOUND)
+
+    const content = await readFile(welcomeNote, { encoding: FILE_ENCODEING })
+    await writeFile(`${rootDir}/${WELCOME_NOTE_FILE_NAME}`, content, {
+      encoding: FILE_ENCODEING
+    })
+  }
+
   const [notesFileNames, notesFileNamesError] = await handleError(
     readdir(rootDir, {
       encoding: FILE_ENCODEING,
