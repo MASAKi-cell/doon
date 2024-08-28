@@ -26,7 +26,7 @@ export const writeNoteInfo = async (note: NoteInfo): Promise<void> => {
     .execute()
 }
 
-export const saveNoteInfo = async (noteInfo: NoteInfo) => {
+export const saveNoteInfo = async (noteInfo: NoteInfo): Promise<void> => {
   const connection = await Database.createConnection()
   connection.getRepository(NoteInfoModel).save(noteInfo)
 }

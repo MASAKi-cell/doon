@@ -9,6 +9,9 @@ export class NoteInfoModel implements NoteInfo {
   @Column('text', { nullable: false })
   title!: string
 
+  @Column('text', { nullable: true })
+  content?: string
+
   @Column('datetime')
   lastEditTime!: Date
 }

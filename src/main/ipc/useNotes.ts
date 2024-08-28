@@ -4,7 +4,7 @@ import { v7 as uuidv7 } from 'uuid'
 import path from 'path'
 
 /** repository */
-import { readNotesInfo, writeNoteInfo } from '@main/repository/noteInfoRepository'
+import { readNotesInfo, saveNoteInfo, writeNoteInfo } from '@main/repository/noteInfoRepository'
 
 /** utils */
 import { handleError } from '@main/utils/handler'
@@ -61,46 +61,57 @@ ipcMain.handle('getNotes', async (): Promise<ReturnType<GetNote>> => {
     logger(LOG_LEVEL.ERROR, `ensureDir Error: ${ensureDirError}`)
   }
 
-  const [notesFile, notesFileError] = await handleError(readNotesInfo())
+  const [readNotes, readNotesError] = await handleError(readNotesInfo())
 
-  if (notesFileError) {
-    logger(LOG_LEVEL.ERROR, `ensureDir Error: ${notesFileError}`)
+  if (readNotesError) {
+    logger(LOG_LEVEL.ERROR, `ensureDir Error: ${readNotesError}`)
   }
 
-  if (!notesFile?.length) {
+  if (!readNotes?.length) {
     logger(LOG_LEVEL.INFO, INFO_MASSAGE.NO_NOTE_FOUND)
 
-    const content = await readFile(welcomeNote, { encoding: FILE_ENCODEING })
-    await writeFile(`${rootDir}/${WELCOME_NOTE_FILE_NAME}`, content, {
-      encoding: FILE_ENCODEING
-    })
+    const newNote: NoteInfo[] = [
+      {
+        uuid: uuidv7(),
+        title: 'New Note',
+        content: welcomeNote,
+        lastEditTime: new Date() // デフォルトの最終編集日時
+      }
+    ]
+
+    const [_, saveNoteError] = await handleError(saveNoteInfo(newNote[0]))
+
+    if (saveNoteError) {
+      logger(LOG_LEVEL.ERROR, `ensureDir Error: ${saveNoteError}`)
+    }
+    return newNote
   }
 
-  const [notesFileNames, notesFileNamesError] = await handleError(
-    readdir(rootDir, {
-      encoding: FILE_ENCODEING,
-      withFileTypes: false
-    })
-  )
+  // const [notesFileNames, notesFileNamesError] = await handleError(
+  //   readdir(rootDir, {
+  //     encoding: FILE_ENCODEING,
+  //     withFileTypes: false
+  //   })
+  // )
 
-  if (notesFileNamesError) {
-    logger(LOG_LEVEL.ERROR, `ensureDir Error: ${notesFileNamesError}`)
-  }
+  // if (notesFileNamesError) {
+  //   logger(LOG_LEVEL.ERROR, `ensureDir Error: ${notesFileNamesError}`)
+  // }
 
-  let notes: string[] = notesFileNames!.filter(
-    (fileName) => fileName.endsWith('.md') && !fileName.startsWith('README')
-  )
-  if (!notes.length) {
-    logger(LOG_LEVEL.INFO, INFO_MASSAGE.NO_NOTE_FOUND)
+  // let notes: string[] = notesFileNames!.filter(
+  //   (fileName) => fileName.endsWith('.md') && !fileName.startsWith('README')
+  // )
+  // if (!notes.length) {
+  //   logger(LOG_LEVEL.INFO, INFO_MASSAGE.NO_NOTE_FOUND)
 
-    const content = await readFile(welcomeNote, { encoding: FILE_ENCODEING })
-    await writeFile(`${rootDir}/${WELCOME_NOTE_FILE_NAME}`, content, {
-      encoding: FILE_ENCODEING
-    })
-    notes = [...WELCOME_NOTE_FILE_NAME]
-  }
+  //   const content = await readFile(welcomeNote, { encoding: FILE_ENCODEING })
+  //   await writeFile(`${rootDir}/${WELCOME_NOTE_FILE_NAME}`, content, {
+  //     encoding: FILE_ENCODEING
+  //   })
+  //   notes = [...WELCOME_NOTE_FILE_NAME]
+  // }
 
-  return Promise.all(notes.map(getFileInfo))
+  return Promise.all(readNotes.map((r) => getFileInfo(r.uuid)))
 })
 
 /**
