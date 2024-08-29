@@ -4,7 +4,12 @@ import { v7 as uuidv7 } from 'uuid'
 import path from 'path'
 
 /** repository */
-import { readNotesInfo, saveNoteInfo, writeNoteInfo } from '@main/repository/noteInfoRepository'
+import {
+  readNotesInfo,
+  saveNoteInfo,
+  getNoteInfo,
+  writeNoteInfo
+} from '@main/repository/noteInfoRepository'
 
 /** utils */
 import { handleError } from '@main/utils/handler'
@@ -20,7 +25,7 @@ import {
   DIALOG_TYPE,
   DialogValue,
   FILE_ENCODEING,
-  WELCOME_NOTE_FILE_NAME,
+  NEW_NOTE,
   DIALOG_CANCEL_ID,
   DIALOG_DEFAULT_ID,
   INFO_MASSAGE
@@ -29,38 +34,28 @@ import {
 /** types */
 import { GetNote, NoteContent, NoteInfo } from '@main/contents/ipc'
 
-// ファイル情報の取得
-const getFileInfo = async (uuid: string): Promise<NoteInfo> => {
-  const filename = `${uuid}.md`
-  const [fileStats, fileStatsError] = await handleError(stat(`${getResourcesDir()}/${filename}`))
+/**
+ * ファイル情報の取得
+ */
+ipcMain.handle('getFileInfo', async (uuid: string): Promise<ReturnType<NoteInfo>> => {
+  const [getNote, getNoteError] = await handleError(getNoteInfo(uuid))
 
-  if (fileStatsError) {
-    logger(LOG_LEVEL.ERROR, `fileStats Error: ${fileStatsError}`)
+  if (getNoteError) {
+    logger(LOG_LEVEL.ERROR, `ensureDir Error: ${getNoteError}`)
     return {
       uuid: uuidv7(), // uuidを新規作成
-      title: filename?.replace(/\.md$/, ''),
+      title: NEW_NOTE,
+      content: welcomeNote,
       lastEditTime: new Date() // デフォルトの最終編集日時
     }
   }
-
-  return {
-    uuid,
-    title: filename?.replace(/\.md$/, ''),
-    lastEditTime: fileStats ? new Date(fileStats.mtimeMs) : new Date()
-  }
-}
+  return getNote
+})
 
 /**
- * ファイル取得
+ * 全ファイルの取得
  */
 ipcMain.handle('getNotes', async (): Promise<ReturnType<GetNote>> => {
-  const rootDir = getResourcesDir()
-  const [_, ensureDirError] = await handleError(ensureDir(rootDir))
-
-  if (ensureDirError) {
-    logger(LOG_LEVEL.ERROR, `ensureDir Error: ${ensureDirError}`)
-  }
-
   const [readNotes, readNotesError] = await handleError(readNotesInfo())
 
   if (readNotesError) {
@@ -73,7 +68,7 @@ ipcMain.handle('getNotes', async (): Promise<ReturnType<GetNote>> => {
     const newNote: NoteInfo[] = [
       {
         uuid: uuidv7(),
-        title: 'New Note',
+        title: NEW_NOTE,
         content: welcomeNote,
         lastEditTime: new Date() // デフォルトの最終編集日時
       }
@@ -86,32 +81,7 @@ ipcMain.handle('getNotes', async (): Promise<ReturnType<GetNote>> => {
     }
     return newNote
   }
-
-  // const [notesFileNames, notesFileNamesError] = await handleError(
-  //   readdir(rootDir, {
-  //     encoding: FILE_ENCODEING,
-  //     withFileTypes: false
-  //   })
-  // )
-
-  // if (notesFileNamesError) {
-  //   logger(LOG_LEVEL.ERROR, `ensureDir Error: ${notesFileNamesError}`)
-  // }
-
-  // let notes: string[] = notesFileNames!.filter(
-  //   (fileName) => fileName.endsWith('.md') && !fileName.startsWith('README')
-  // )
-  // if (!notes.length) {
-  //   logger(LOG_LEVEL.INFO, INFO_MASSAGE.NO_NOTE_FOUND)
-
-  //   const content = await readFile(welcomeNote, { encoding: FILE_ENCODEING })
-  //   await writeFile(`${rootDir}/${WELCOME_NOTE_FILE_NAME}`, content, {
-  //     encoding: FILE_ENCODEING
-  //   })
-  //   notes = [...WELCOME_NOTE_FILE_NAME]
-  // }
-
-  return Promise.all(readNotes.map((r) => getFileInfo(r.uuid)))
+  return readNotes
 })
 
 /**
@@ -127,7 +97,6 @@ ipcMain.handle('readNote', async (_, filename: string): Promise<NoteContent> => 
     logger(LOG_LEVEL.ERROR, `readNote Error: ${readFileError}`)
     return
   }
-
   return readFiles
 })
 

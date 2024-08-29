@@ -4,7 +4,14 @@ import { NoteInfoModel } from '@main/database/model/noteInfo'
 /** types */
 import { NoteInfo } from '@main/contents/ipc'
 
-export const getNoteInfo = async () => {}
+export const getNoteInfo = async (uuid: string): Promise<NoteInfoModel> => {
+  const connection = await Database.createConnection()
+  return await connection
+    .getRepository(NoteInfoModel)
+    .createQueryBuilder('noteInfo')
+    .where({ uuid })
+    .getOneOrFail()
+}
 
 export const readNotesInfo = async (): Promise<NoteInfoModel[]> => {
   const connection = await Database.createConnection()

@@ -34,6 +34,7 @@ export const INFO_MASSAGE = {
 export const APP_DIRECTORY_NAME = 'Desktop/doon'
 export const FILE_ENCODEING = 'utf8'
 export const WELCOME_NOTE_FILE_NAME = 'Welcome.md'
+export const NEW_NOTE = 'New Note'
 
 export const AUTE_SAVING_TIME = 3000
 export const DIALOG_DEFAULT_ID = 0
