@@ -16,12 +16,16 @@
     "dev": "electron-vite dev",
     "build:main": "tsc -p tsconfig.main.json",
     "build:renderer": "tsc -p tsconfig.renderer.json",
+    "build:web": "tsc -p tsconfig.web.json",
     "build": "npm run build:main && npm run build:renderer && npm run typecheck && electron-vite build",
     "postinstall": "electron-builder install-app-deps",
     "build:unpack": "npm run build && electron-builder --dir",
     "build:win": "npm run build && electron-builder --win",
     "build:mac": "electron-vite build && electron-builder --mac",
-    "build:linux": "electron-vite build && electron-builder --linux"
+    "build:linux": "electron-vite build && electron-builder --linux",
+    "clean": "npm-run-all clean:dist clean:build",
+    "clean:dist": "rimraf dist",
+    "clean:build": "rimraf build"
   },
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.0",
@@ -42,6 +46,7 @@
     "rehype-raw": "^7.0.0",
     "remark-gfm": "^4.0.0",
     "remark-math": "^6.0.0",
+    "rimraf": "^3.0.2",
     "sqlite3": "^5.1.7",
     "typeorm": "^0.3.20",
     "uuid": "^10.0.0"
