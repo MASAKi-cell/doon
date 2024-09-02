@@ -7,7 +7,7 @@
     "src/preload/*.d.ts"
   ],
   "compilerOptions": {
-    "composite": true,
+    // "composite": true,
     "jsx": "react-jsx",
     "noUnusedLocals": true, // 未使用の変数を禁止
     "noUnusedParameters": true,  // 未使用の引数を禁止
