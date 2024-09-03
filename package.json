@@ -25,7 +25,8 @@
     "build:linux": "electron-vite build && electron-builder --linux",
     "clean": "npm-run-all clean:dist clean:build",
     "clean:dist": "rimraf dist",
-    "clean:build": "rimraf build"
+    "clean:build": "rimraf build",
+    "typeorm": "typeorm-ts-node-commonjs"
   },
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.0",
@@ -73,6 +74,7 @@
     "stylelint": "^16.3.1",
     "stylelint-config-recess-order": "^5.0.0",
     "stylelint-config-recommended-scss": "^14.0.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
     "vite": "^5.0.12"
   }
