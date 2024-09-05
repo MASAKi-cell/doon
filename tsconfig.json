@@ -2,6 +2,20 @@
   "files": [],
   "compilerOptions": {
     "esModuleInterop": true,
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "paths": {
+      "@renderer/*": [
+        "src/renderer/src/*"
+      ],
+      "@main/*": [
+        "src/main/*"
+      ]
+    },
+  },
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
   },
   "references": [{ "path": "./tsconfig.node.json" }, { "path": "./tsconfig.web.json" }],
 }
+
