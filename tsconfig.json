@@ -4,6 +4,7 @@
     "esModuleInterop": true,
     "outDir": "./dist",
     "baseUrl": ".",
+    "experimentalDecorators": true,
     "paths": {
       "@renderer/*": [
         "src/renderer/src/*"

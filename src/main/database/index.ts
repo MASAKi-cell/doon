@@ -11,6 +11,7 @@ export default class Database {
     if (!this._conn) {
       this._conn = new DataSource(ormconfig)
       await this._conn.initialize()
+      await this._conn.runMigrations() // マイグレーションの実行
     }
     return this._conn
   }
