@@ -21,8 +21,8 @@ const deleteNote = async (filename: string): Promise<ReturnType<DeleteNote>> => 
   return ipcRenderer.invoke('deleteNote', filename)
 }
 
-const readNote = async (filename: string): Promise<ReturnType<ReadNote>> => {
-  return ipcRenderer.invoke('readNote', filename)
+const readNote = async (uuid: string): Promise<ReturnType<ReadNote>> => {
+  return ipcRenderer.invoke('readNote', uuid)
 }
 
 const writeNote = async (filename: string, context: string): Promise<ReturnType<WriteNote>> => {

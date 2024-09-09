@@ -1,5 +1,7 @@
 export type NoteInfo = {
+  uuid: string
   title: string
+  content?: string
   lastEditTime: Date
 }
 export type NoteContent = string

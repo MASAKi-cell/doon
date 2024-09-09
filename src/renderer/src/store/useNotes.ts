@@ -1,13 +1,12 @@
 import { unwrap } from 'jotai/utils'
+import { v7 as uuidv7 } from 'uuid'
 import { atom } from 'jotai'
 
 /** tyes */
 import { NoteInfo } from '@renderer/contents/note'
 
-// TODO:jotaiをテストする
-// TODO： Idで判別させる
 const getNotes = async () => {
-  const notes = await window.electron.getNotes()
+  const notes: NoteInfo[] = await window.electron.getNotes()
   return notes.sort((a, b) => b.lastEditTime.getTime() - a.lastEditTime.getTime())
 }
 
@@ -20,15 +19,15 @@ export const selectedNoteIndexAtom = atom<number | null>(null)
  * note選択
  */
 const selectedNoteAtomAsync = atom(async (get) => {
-  const notes = get(notesAtom)
+  const notes: NoteInfo[] | undefined = get(notesAtom)
   const index = get(selectedNoteIndexAtom)
 
   if (!notes) {
     return null
   }
 
-  const selectedNote = notes[index ?? 1]
-  const noteContent = await window.electron.readNote(selectedNote?.title)
+  const selectedNote: NoteInfo = notes[index ?? 1]
+  const noteContent = await window.electron.readNote(selectedNote?.uuid)
 
   return {
     ...selectedNote,
@@ -80,7 +79,9 @@ export const createNoteAtom = atom(null, async (get, set, title: string) => {
   }
 
   const newNote: NoteInfo = {
+    uuid: uuidv7(),
     title,
+    content: '',
     lastEditTime: new Date()
   }
 

@@ -87,17 +87,13 @@ ipcMain.handle('getNotes', async (): Promise<ReturnType<GetNote>> => {
 /**
  * ファイル読み込み
  */
-ipcMain.handle('readNote', async (_, filename: string): Promise<NoteContent> => {
-  const rootDir = getResourcesDir()
-
-  const [readFiles, readFileError] = await handleError(
-    readFile(`${rootDir}/${filename}.md`, { encoding: FILE_ENCODEING })
-  )
-  if (readFileError) {
-    logger(LOG_LEVEL.ERROR, `readNote Error: ${readFileError}`)
+ipcMain.handle('readNote', async (_, uuid: string): Promise<NoteContent> => {
+  const [getNote, getNoteError] = await handleError(getNoteInfo(uuid))
+  if (getNoteError) {
+    logger(LOG_LEVEL.ERROR, `readNote Error: ${getNoteError}`)
     return
   }
-  return readFiles
+  return getNote?.content
 })
 
 /**
