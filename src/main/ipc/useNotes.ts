@@ -4,20 +4,12 @@ import { v7 as uuidv7 } from 'uuid'
 import path from 'path'
 
 /** repository */
-import {
-  readNotesInfo,
-  saveNoteInfo,
-  getNoteInfo,
-  writeNoteInfo
-} from '@main/repository/noteInfoRepository'
+import { readNotesInfo, saveNoteInfo, getNoteInfo } from '@main/repository/noteInfoRepository'
 
 /** utils */
 import { handleError } from '@main/utils/handler'
 import { logger } from '@main/utils/logger'
 import { getResourcesDir } from '@main/utils/index'
-
-/** asset */
-import welcomeNote from '@main/resources/welcomeNote.md?asset'
 
 /** enum */
 import {
@@ -25,7 +17,7 @@ import {
   DIALOG_TYPE,
   DialogValue,
   FILE_ENCODEING,
-  NEW_NOTE,
+  WELCOME,
   DIALOG_CANCEL_ID,
   DIALOG_DEFAULT_ID,
   INFO_MASSAGE
@@ -44,8 +36,8 @@ ipcMain.handle('getFileInfo', async (uuid: string): Promise<ReturnType<NoteInfo>
     logger(LOG_LEVEL.ERROR, `ensureDir Error: ${getNoteError}`)
     return {
       uuid: uuidv7(), // uuidを新規作成
-      title: NEW_NOTE,
-      content: welcomeNote,
+      title: WELCOME.NEW_NOTE,
+      content: WELCOME.WELCOME_NOTE_CONTENT,
       lastEditTime: new Date() // デフォルトの最終編集日時
     }
   }
@@ -68,8 +60,8 @@ ipcMain.handle('getNotes', async (): Promise<ReturnType<GetNote>> => {
     const newNote: NoteInfo[] = [
       {
         uuid: uuidv7(),
-        title: NEW_NOTE,
-        content: welcomeNote,
+        title: WELCOME.NEW_NOTE,
+        content: WELCOME.WELCOME_NOTE_CONTENT,
         lastEditTime: new Date() // デフォルトの最終編集日時
       }
     ]
