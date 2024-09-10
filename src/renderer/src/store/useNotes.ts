@@ -39,9 +39,10 @@ export const selectedNoteAtom = unwrap(
   selectedNoteAtomAsync,
   (prev) =>
     prev ?? {
+      uuid: uuidv7(),
       title: '',
       content: '',
-      lastEditTime: Date.now()
+      lastEditTime: new Date()
     }
 )
 

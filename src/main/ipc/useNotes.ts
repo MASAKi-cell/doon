@@ -1,10 +1,15 @@
-import { ensureDir, readFile, readdir, remove, stat, writeFile } from 'fs-extra'
+import { ensureDir, remove, writeFile } from 'fs-extra'
 import { dialog, ipcMain } from 'electron'
 import { v7 as uuidv7 } from 'uuid'
 import path from 'path'
 
 /** repository */
-import { readNotesInfo, saveNoteInfo, getNoteInfo } from '@main/repository/noteInfoRepository'
+import {
+  readNotesInfo,
+  saveNoteInfo,
+  getNoteInfo,
+  writeNoteInfo
+} from '@main/repository/noteInfoRepository'
 
 /** utils */
 import { handleError } from '@main/utils/handler'
@@ -16,7 +21,6 @@ import {
   LOG_LEVEL,
   DIALOG_TYPE,
   DialogValue,
-  FILE_ENCODEING,
   WELCOME,
   DIALOG_CANCEL_ID,
   DIALOG_DEFAULT_ID,
@@ -91,18 +95,13 @@ ipcMain.handle('readNote', async (_, uuid: string): Promise<NoteContent> => {
 /**
  * ファイル書き込み
  */
-ipcMain.handle('writeNote', async (_, filename: string, content: string): Promise<void> => {
-  const rootDir = getResourcesDir()
-  const [writeFiles, writeFileError] = await handleError(
-    writeFile(`${rootDir}/${filename}.md`, content, { encoding: FILE_ENCODEING })
-  )
+ipcMain.handle('writeNote', async (_c, note: NoteInfo): Promise<void> => {
+  const [_, writeFileError] = await handleError(writeNoteInfo(note))
 
   if (writeFileError) {
     logger(LOG_LEVEL.ERROR, `writeNote Error: ${writeFileError}`)
     return
   }
-
-  return writeFiles
 })
 
 /**

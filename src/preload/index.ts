@@ -2,7 +2,7 @@ import { contextBridge, ipcRenderer } from 'electron'
 
 /** type */
 import { ERROR_MASSAGE } from '../main/contents/enum'
-import { CreateNote, DeleteNote, GetNote, ReadNote, WriteNote } from '@main/contents/ipc'
+import { CreateNote, DeleteNote, GetNote, NoteInfo, ReadNote, WriteNote } from '@main/contents/ipc'
 
 if (!process.contextIsolated) {
   // コンテキストが分離されていない場合
@@ -25,8 +25,8 @@ const readNote = async (uuid: string): Promise<ReturnType<ReadNote>> => {
   return ipcRenderer.invoke('readNote', uuid)
 }
 
-const writeNote = async (filename: string, context: string): Promise<ReturnType<WriteNote>> => {
-  return ipcRenderer.invoke('writeNote', filename, context)
+const writeNote = async (note: NoteInfo): Promise<ReturnType<WriteNote>> => {
+  return ipcRenderer.invoke('writeNote', note)
 }
 
 // Docs: https://www.electronjs.org/docs/latest/tutorial/context-isolation/#usage-with-typescript

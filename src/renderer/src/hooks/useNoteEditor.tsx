@@ -20,7 +20,7 @@ export const useNoteEditor = () => {
     }
 
     if (selectedNote?.title) {
-      await window.electron.writeNote(selectedNote.title, content)
+      await window.electron.writeNote(selectedNote)
       setTimeout(async () => {
         if (selectedNote) {
           saveNote(), AUTE_SAVING_TIME
@@ -35,7 +35,9 @@ export const useNoteEditor = () => {
     }
 
     const content = editor.current?.getMarkdown()
-    if (!!content) await window.electron.writeNote(selectedNote.title, content)
+    if (!!content) {
+      await window.electron.writeNote(selectedNote)
+    }
   }
 
   return {
