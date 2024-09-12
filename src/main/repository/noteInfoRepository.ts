@@ -23,13 +23,14 @@ export const readNotesInfo = async (): Promise<NoteInfoModel[]> => {
 }
 
 export const writeNoteInfo = async (note: NoteInfo): Promise<void> => {
+  const { uuid, content, title, lastEditTime } = note
   const connection = await Database.createConnection()
   await connection
     .getRepository(NoteInfoModel)
     .createQueryBuilder()
-    .insert()
-    .into(NoteInfoModel)
-    .values(note)
+    .update(NoteInfoModel)
+    .set({ content, title, lastEditTime })
+    .where('uuid= :id', { id: uuid })
     .execute()
 }
 
