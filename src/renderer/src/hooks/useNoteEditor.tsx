@@ -6,7 +6,7 @@ import { useRef } from 'react'
 import { saveNoteAtom, selectedNoteAtom } from '@renderer/store/useNotes'
 
 /** types */
-import { NoteContent } from '@renderer/contents/note'
+import { NoteContent, NoteInfo } from '@renderer/contents/note'
 import { AUTE_SAVING_TIME } from '@renderer/contents/enums'
 
 export const useNoteEditor = () => {
@@ -19,8 +19,14 @@ export const useNoteEditor = () => {
       return
     }
 
-    if (selectedNote?.title) {
-      await window.electron.writeNote(selectedNote)
+    if (selectedNote?.uuid) {
+      const changeNote: NoteInfo = {
+        uuid: selectedNote?.uuid,
+        title: selectedNote.title,
+        content,
+        lastEditTime: new Date()
+      }
+      await window.electron.writeNote(changeNote)
       setTimeout(async () => {
         if (selectedNote) {
           saveNote(), AUTE_SAVING_TIME

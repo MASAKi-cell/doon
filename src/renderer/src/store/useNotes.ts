@@ -58,7 +58,7 @@ export const saveNoteAtom = atom(null, (get, set) => {
   set(
     notesAtom,
     notes.map((note) => {
-      if (note.title === selectedNote.title) {
+      if (note.uuid === selectedNote.uuid) {
         return {
           ...note,
           lastEditTime: new Date()
