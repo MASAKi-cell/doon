@@ -113,7 +113,6 @@ ipcMain.handle('createNote', async (): Promise<NoteInfo['title'] | false> => {
 
   const { filePath, canceled } = await dialog.showSaveDialog({
     title: 'New note',
-    defaultPath: `${rootDir}/Untitled.md`,
     buttonLabel: 'Create',
     properties: ['showOverwriteConfirmation'],
     showsTagField: false,

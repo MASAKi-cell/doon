@@ -39,6 +39,9 @@ export const saveNoteInfo = async (noteInfo: NoteInfo): Promise<void> => {
   connection.getRepository(NoteInfoModel).save(noteInfo)
 }
 
-export const createNoteInfo = async () => {}
+export const createNoteInfo = async () => {
+  const connection = await Database.createConnection()
+  connection.getRepository(NoteInfoModel)
+}
 
 export const deleteNoteOInfo = async () => {}
