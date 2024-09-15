@@ -6,7 +6,7 @@ export type CreatModalProps = ComponentPropsWithoutRef<'input'> & {
   onCancel: () => void
 }
 
-export const creatModal = ({ isOpen, onConfirm, onCancel }: CreatModalProps) => {
+export const CreateModal = ({ isOpen, onConfirm, onCancel }: CreatModalProps) => {
   const [title, setTitle] = useState('')
   if (!isOpen) {
     return null

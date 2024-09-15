@@ -2,6 +2,7 @@ import { useSetAtom } from 'jotai'
 
 /** components */
 import { ActionButton, ActionButtonProps } from '@renderer/components/features/button/ActionButton'
+import { CreateModal } from '@renderer/components/features/modals/CreateModal'
 
 /** store */
 import { createNoteAtom } from '@renderer/store/useNotes'
@@ -23,8 +24,11 @@ export const NewNoteButton = ({ ...props }: ActionButtonProps) => {
   }
 
   return (
-    <ActionButton onClick={handleAddNote} {...props}>
-      <img src={newNote_icon} className={style.wrapper} />
-    </ActionButton>
+    <>
+      <ActionButton onClick={handleAddNote} {...props}>
+        <img src={newNote_icon} className={style.wrapper} />
+      </ActionButton>
+      <CreateModal />
+    </>
   )
 }
