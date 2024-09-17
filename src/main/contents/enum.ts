@@ -30,15 +30,15 @@ export const ERROR_MASSAGE = {
 
 /** 汎用的なメッセージ */
 export const INFO_MASSAGE = {
-  NO_NOTE_FOUND: 'No notes found, creating a welcome note',
-  NOTE_CANCELED: 'Note creation canceled'
+  NO_NOTE_FOUND: 'ノートが見つかりませんでした。 新規作成します。',
+  NOTE_CANCELED: 'ノートの削除をキャンセルしました。'
 }
 
 /** Note初期値 */
 export const WELCOME = {
   WELCOME_NOTE_FILE_NAME: 'Welcome.md',
-  WELCOME_NOTE_CONTENT: '## Welcome to NoteMark 👋🏻',
-  NEW_NOTE: 'New Note'
+  WELCOME_NOTE_CONTENT: '## Welcome to Doon 👋🏻',
+  NEW_NOTE: '新規ノート'
 }
 
 export const APP_DIRECTORY_NAME = 'Desktop/doon'

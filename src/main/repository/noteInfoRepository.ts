@@ -1,4 +1,5 @@
 import Database from '@main/database/index'
+import { DeleteResult, UpdateResult } from 'typeorm'
 import { NoteInfoModel } from '@main/database/model/noteInfo'
 
 /** types */
@@ -22,10 +23,10 @@ export const readNotesInfo = async (): Promise<NoteInfoModel[]> => {
     .getMany()
 }
 
-export const writeNoteInfo = async (note: NoteInfo): Promise<void> => {
+export const writeNoteInfo = async (note: NoteInfo): Promise<UpdateResult> => {
   const { uuid, content, title, lastEditTime } = note
   const connection = await Database.createConnection()
-  await connection
+  return await connection
     .getRepository(NoteInfoModel)
     .createQueryBuilder()
     .update(NoteInfoModel)
@@ -39,9 +40,14 @@ export const saveNoteInfo = async (noteInfo: NoteInfo): Promise<void> => {
   connection.getRepository(NoteInfoModel).save(noteInfo)
 }
 
-export const createNoteInfo = async () => {
+export const deleteNoteInfo = async (uuid: string): Promise<DeleteResult> => {
   const connection = await Database.createConnection()
-  connection.getRepository(NoteInfoModel)
-}
 
-export const deleteNoteOInfo = async () => {}
+  return connection
+    .getRepository(NoteInfoModel)
+    .createQueryBuilder()
+    .delete()
+    .from(NoteInfoModel)
+    .where('id = :id', { id: uuid })
+    .execute()
+}

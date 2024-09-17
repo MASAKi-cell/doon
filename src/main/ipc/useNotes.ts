@@ -8,7 +8,8 @@ import {
   readNotesInfo,
   saveNoteInfo,
   getNoteInfo,
-  writeNoteInfo
+  writeNoteInfo,
+  deleteNoteInfo
 } from '@main/repository/noteInfoRepository'
 
 /** utils */
@@ -29,24 +30,6 @@ import {
 
 /** types */
 import { GetNote, NoteContent, NoteInfo } from '@main/contents/ipc'
-
-/**
- * ファイル情報の取得
- */
-ipcMain.handle('getFileInfo', async (uuid: string): Promise<ReturnType<NoteInfo>> => {
-  const [getNote, getNoteError] = await handleError(getNoteInfo(uuid))
-
-  if (getNoteError) {
-    logger(LOG_LEVEL.ERROR, `ensureDir Error: ${getNoteError}`)
-    return {
-      uuid: uuidv7(), // uuidを新規作成
-      title: WELCOME.NEW_NOTE,
-      content: WELCOME.WELCOME_NOTE_CONTENT,
-      lastEditTime: new Date() // デフォルトの最終編集日時
-    }
-  }
-  return getNote
-})
 
 /**
  * 全ファイルの取得
@@ -73,7 +56,7 @@ ipcMain.handle('getNotes', async (): Promise<ReturnType<GetNote>> => {
     const [_, saveNoteError] = await handleError(saveNoteInfo(newNote[0]))
 
     if (saveNoteError) {
-      logger(LOG_LEVEL.ERROR, `ensureDir Error: ${saveNoteError}`)
+      logger(LOG_LEVEL.ERROR, `saveNoteInfo Error: ${saveNoteError}`)
     }
     return newNote
   }
@@ -107,71 +90,53 @@ ipcMain.handle('writeNote', async (_c, note: NoteInfo): Promise<void> => {
 /**
  * ファイル新規作成
  */
-ipcMain.handle('createNote', async (): Promise<NoteInfo['title'] | false> => {
+ipcMain.handle('createNote', async (_, filename: string): Promise<NoteInfo | false> => {
   const rootDir = getResourcesDir()
   await ensureDir(rootDir)
 
-  const { filePath, canceled } = await dialog.showSaveDialog({
-    title: 'New note',
-    buttonLabel: 'Create',
-    properties: ['showOverwriteConfirmation'],
-    showsTagField: false,
-    filters: [{ name: 'Markdown', extensions: ['md'] }]
-  })
-
-  if (canceled || !filePath) {
-    logger(LOG_LEVEL.INFO, INFO_MASSAGE.NOTE_CANCELED)
-    return false
+  const newNote: NoteInfo = {
+    uuid: uuidv7(),
+    title: filename,
+    content: WELCOME.WELCOME_NOTE_CONTENT,
+    lastEditTime: new Date() // デフォルトの最終編集日時
   }
 
-  const { name: filename, dir: parentDir } = path.parse(filePath)
+  const [__, saveNoteError] = await handleError(saveNoteInfo(newNote))
 
-  if (parentDir !== rootDir) {
-    await dialog.showMessageBox({
-      type: DIALOG_TYPE.ERROR,
-      title: 'Creation failed',
-      message: `All notes must be saved under ${rootDir}.
-      Avoid using other directories!`
-    })
-
-    return false
+  if (saveNoteError) {
+    logger(LOG_LEVEL.ERROR, `saveNoteInfo Error: ${saveNoteError}`)
   }
 
-  console.info(`Creating note: ${filePath}`)
-  await writeFile(filePath, '')
+  logger(LOG_LEVEL.INFO, `saving note: ${filename}`)
 
-  return filename
+  return newNote
 })
 
 /**
  * ファイル削除
  */
-ipcMain.handle('deleteNote', async (_, filename: string): Promise<boolean> => {
-  const rootDir = getResourcesDir()
-
+ipcMain.handle('deleteNote', async (_, filename: string, uuid: string): Promise<boolean> => {
   const { response } = await dialog.showMessageBox({
     type: DIALOG_TYPE.WARNING as DialogValue,
-    title: 'Delete note',
-    message: `Are you sure you want to delete ${filename}?`,
-    buttons: ['Delete', 'Cancel'], // 0：Delete, 1：Cancel
+    title: 'ノート削除',
+    message: `${filename} を削除しますか?`,
+    buttons: ['削除', 'キャンセル'], // 0：削除, 1：キャンセル
     defaultId: DIALOG_DEFAULT_ID,
     cancelId: DIALOG_CANCEL_ID
   })
 
   if (response === DIALOG_CANCEL_ID) {
-    console.info('Note deletion canceled')
+    console.info(INFO_MASSAGE.NOTE_CANCELED)
     return false
   }
 
-  const [__, deleteFileError] = await handleError(remove(`${rootDir}/${filename}.md`))
+  const [__, deleteFileError] = await handleError(deleteNoteInfo(uuid))
 
   if (deleteFileError) {
-    logger(LOG_LEVEL.ERROR, `deleteNote Error: ${deleteFileError}`)
+    logger(LOG_LEVEL.ERROR, `DeleteNote Error: ${deleteFileError}`)
     return false
   }
-
-  console.info(`Deleting note: ${filename}`)
-  await remove(`${rootDir}/${filename}.md`)
+  logger(LOG_LEVEL.INFO, `Deleting note: ${filename}`)
 
   return true
 })
