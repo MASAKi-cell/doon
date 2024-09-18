@@ -1,7 +1,5 @@
-import { ensureDir, remove, writeFile } from 'fs-extra'
 import { dialog, ipcMain } from 'electron'
 import { v7 as uuidv7 } from 'uuid'
-import path from 'path'
 
 /** repository */
 import {
@@ -15,7 +13,6 @@ import {
 /** utils */
 import { handleError } from '@main/utils/handler'
 import { logger } from '@main/utils/logger'
-import { getResourcesDir } from '@main/utils/index'
 
 /** enum */
 import {
@@ -91,9 +88,6 @@ ipcMain.handle('writeNote', async (_c, note: NoteInfo): Promise<void> => {
  * ファイル新規作成
  */
 ipcMain.handle('createNote', async (_, filename: string): Promise<NoteInfo | false> => {
-  const rootDir = getResourcesDir()
-  await ensureDir(rootDir)
-
   const newNote: NoteInfo = {
     uuid: uuidv7(),
     title: filename,
