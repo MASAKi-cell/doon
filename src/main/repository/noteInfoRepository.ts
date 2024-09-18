@@ -42,12 +42,11 @@ export const saveNoteInfo = async (noteInfo: NoteInfo): Promise<void> => {
 
 export const deleteNoteInfo = async (uuid: string): Promise<DeleteResult> => {
   const connection = await Database.createConnection()
-
   return connection
     .getRepository(NoteInfoModel)
     .createQueryBuilder()
     .delete()
     .from(NoteInfoModel)
-    .where('id = :id', { id: uuid })
+    .where('uuid = :id', { id: uuid })
     .execute()
 }

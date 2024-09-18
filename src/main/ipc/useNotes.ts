@@ -87,24 +87,27 @@ ipcMain.handle('writeNote', async (_c, note: NoteInfo): Promise<void> => {
 /**
  * ファイル新規作成
  */
-ipcMain.handle('createNote', async (_, filename: string): Promise<NoteInfo | false> => {
-  const newNote: NoteInfo = {
-    uuid: uuidv7(),
-    title: filename,
-    content: WELCOME.WELCOME_NOTE_CONTENT,
-    lastEditTime: new Date() // デフォルトの最終編集日時
+ipcMain.handle(
+  'createNote',
+  async (_, filename: string = WELCOME.NEW_NOTE): Promise<NoteInfo | false> => {
+    const newNote: NoteInfo = {
+      uuid: uuidv7(),
+      title: filename,
+      content: WELCOME.WELCOME_NOTE_CONTENT,
+      lastEditTime: new Date() // デフォルトの最終編集日時
+    }
+
+    const [__, saveNoteError] = await handleError(saveNoteInfo(newNote))
+
+    if (saveNoteError) {
+      logger(LOG_LEVEL.ERROR, `saveNoteInfo Error: ${saveNoteError}`)
+    }
+
+    logger(LOG_LEVEL.INFO, `saving note: ${filename}`)
+
+    return newNote
   }
-
-  const [__, saveNoteError] = await handleError(saveNoteInfo(newNote))
-
-  if (saveNoteError) {
-    logger(LOG_LEVEL.ERROR, `saveNoteInfo Error: ${saveNoteError}`)
-  }
-
-  logger(LOG_LEVEL.INFO, `saving note: ${filename}`)
-
-  return newNote
-})
+)
 
 /**
  * ファイル削除

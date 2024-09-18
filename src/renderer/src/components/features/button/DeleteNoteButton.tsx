@@ -17,7 +17,10 @@ export const DeleteNoteButton = ({ ...props }: ActionButtonProps) => {
     if (!selectedNote) {
       return
     }
-    const isDeleted: boolean = await window.electron.deleteNote(selectedNote.title)
+    const isDeleted: boolean = await window.electron.deleteNote(
+      selectedNote.title,
+      selectedNote.uuid
+    )
 
     if (!isDeleted) {
       return

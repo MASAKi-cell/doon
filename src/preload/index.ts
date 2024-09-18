@@ -13,12 +13,8 @@ const getNotes = async (): Promise<ReturnType<GetNote>> => {
   return await ipcRenderer.invoke('getNotes')
 }
 
-const createNote = async (): Promise<ReturnType<CreateNote>> => {
-  return ipcRenderer.invoke('createNote')
-}
-
-const deleteNote = async (filename: string): Promise<ReturnType<DeleteNote>> => {
-  return ipcRenderer.invoke('deleteNote', filename)
+const createNote = async (filename: string): Promise<ReturnType<CreateNote>> => {
+  return ipcRenderer.invoke('createNote', filename)
 }
 
 const readNote = async (uuid: string): Promise<ReturnType<ReadNote>> => {
@@ -29,14 +25,18 @@ const writeNote = async (note: NoteInfo): Promise<ReturnType<WriteNote>> => {
   return ipcRenderer.invoke('writeNote', note)
 }
 
+const deleteNote = async (filename: string, uuid: string): Promise<ReturnType<DeleteNote>> => {
+  return ipcRenderer.invoke('deleteNote', filename, uuid)
+}
+
 // Docs: https://www.electronjs.org/docs/latest/tutorial/context-isolation/#usage-with-typescript
 // contextBridgeに露出させるAPIを定義
 export interface IElectronAPI {
   getNotes: typeof getNotes
   createNote: typeof createNote
-  deleteNote: typeof deleteNote
   readNote: typeof readNote
   writeNote: typeof writeNote
+  deleteNote: typeof deleteNote
 }
 
 try {
@@ -44,9 +44,9 @@ try {
   contextBridge.exposeInMainWorld('electron', {
     getNotes,
     createNote,
-    deleteNote,
     readNote,
-    writeNote
+    writeNote,
+    deleteNote
   })
 } catch (error) {
   console.error(error)
