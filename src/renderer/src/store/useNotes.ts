@@ -73,17 +73,10 @@ export const saveNoteAtom = atom(null, (get, set) => {
 /**
  * noteの新規作成
  */
-export const createNoteAtom = atom(null, async (get, set, title: string) => {
+export const createNoteAtom = atom(null, async (get, set, newNote: NoteInfo) => {
   const notes = get(notesAtom)
   if (!notes) {
     return
-  }
-
-  const newNote: NoteInfo = {
-    uuid: uuidv7(),
-    title,
-    content: '',
-    lastEditTime: new Date()
   }
 
   set(notesAtom, [newNote, ...notes.filter((note) => note.title !== newNote.title)])

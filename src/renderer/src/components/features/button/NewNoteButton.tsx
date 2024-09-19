@@ -10,16 +10,19 @@ import { createNoteAtom } from '@renderer/store/useNotes'
 import style from '@renderer/styles/features/button/newNoteButton.module.scss'
 import newNote_icon from '@renderer/assets/newNote_icon.svg'
 
+/** types */
+import { NoteInfo } from '@renderer/contents/note'
+
 export const NewNoteButton = ({ ...props }: ActionButtonProps) => {
   const createNote = useSetAtom(createNoteAtom)
   const handleAddNote = async (): Promise<void> => {
-    const title: string | false = await window.electron.createNote('')
+    const newNote: NoteInfo | undefined = await window.electron.createNote('新規ノート')
 
-    if (!title) {
+    if (!newNote) {
       return
     }
 
-    createNote(title)
+    createNote(newNote)
   }
 
   return (

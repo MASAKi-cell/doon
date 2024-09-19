@@ -19,7 +19,7 @@ export const NoteList = ({ onSelect, ...props }: NoteListProps) => {
   if (!notes?.length) {
     return (
       <ul {...props}>
-        <span>No Notes</span>
+        <span>ノートがありません。</span>
       </ul>
     )
   }

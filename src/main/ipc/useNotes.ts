@@ -49,7 +49,6 @@ ipcMain.handle('getNotes', async (): Promise<ReturnType<GetNote>> => {
         lastEditTime: new Date() // デフォルトの最終編集日時
       }
     ]
-
     const [_, saveNoteError] = await handleError(saveNoteInfo(newNote[0]))
 
     if (saveNoteError) {
@@ -76,7 +75,14 @@ ipcMain.handle('readNote', async (_, uuid: string): Promise<NoteContent> => {
  * ファイル書き込み
  */
 ipcMain.handle('writeNote', async (_c, note: NoteInfo): Promise<void> => {
-  const [_, writeFileError] = await handleError(writeNoteInfo(note))
+  /** contentの一行目をtitle表示に設定する。 */
+  const noteTitle = note.content?.slice(0, note.content.indexOf('\n'))
+  const noteWithTitle = {
+    ...note,
+    title: noteTitle ?? ''
+  }
+
+  const [_, writeFileError] = await handleError(writeNoteInfo(noteWithTitle))
 
   if (writeFileError) {
     logger(LOG_LEVEL.ERROR, `writeNote Error: ${writeFileError}`)
@@ -89,14 +95,13 @@ ipcMain.handle('writeNote', async (_c, note: NoteInfo): Promise<void> => {
  */
 ipcMain.handle(
   'createNote',
-  async (_, filename: string = WELCOME.NEW_NOTE): Promise<NoteInfo | false> => {
+  async (_, filename: string = '新規ノート'): Promise<NoteInfo | undefined> => {
     const newNote: NoteInfo = {
       uuid: uuidv7(),
       title: filename,
       content: WELCOME.WELCOME_NOTE_CONTENT,
       lastEditTime: new Date() // デフォルトの最終編集日時
     }
-
     const [__, saveNoteError] = await handleError(saveNoteInfo(newNote))
 
     if (saveNoteError) {

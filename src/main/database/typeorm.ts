@@ -10,5 +10,5 @@ export const ormconfig: DataSourceOptions = {
   migrations: [path.join(getHomeDir(), 'src/main/database/migrations/*.js')],
   migrationsRun: true, // マイグレーション同時実行
   synchronize: true,
-  logging: true
+  logging: false
 }
