@@ -5,13 +5,19 @@ import { atom } from 'jotai'
 /** tyes */
 import { NoteInfo } from '@renderer/contents/note'
 
-const getNotes = async () => {
+const getNotes = atom<NoteInfo[] | Promise<NoteInfo[]>>(async () => {
   const notes: NoteInfo[] = await window.electron.getNotes()
   return notes.sort((a, b) => b.lastEditTime.getTime() - a.lastEditTime.getTime())
-}
+})
+export const notesAtom = unwrap(getNotes, (prev) => prev ?? [])
 
-const notesAtomAsync = atom<NoteInfo[] | Promise<NoteInfo[]>>(getNotes())
-export const notesAtom = unwrap(notesAtomAsync, (prev) => prev)
+/**  */
+export const writableNotesAtom = atom<NoteInfo[], [NoteInfo[]], void>(
+  [] as NoteInfo[], // 初期値
+  (_, set, newNotes: NoteInfo[]) => {
+    set(writableNotesAtom, newNotes) // 値の書き換えロジック
+  }
+)
 
 export const selectedNoteIndexAtom = atom<number | null>(null)
 
@@ -56,7 +62,7 @@ export const saveNoteAtom = atom(null, (get, set) => {
   if (!selectedNote || !notes) return
 
   set(
-    notesAtom,
+    writableNotesAtom,
     notes.map((note) => {
       if (note.uuid === selectedNote.uuid) {
         return {

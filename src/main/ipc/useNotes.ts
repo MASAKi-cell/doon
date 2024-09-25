@@ -44,7 +44,7 @@ ipcMain.handle('getNotes', async (): Promise<ReturnType<GetNote>> => {
     const newNote: NoteInfo[] = [
       {
         uuid: uuidv7(),
-        title: WELCOME.NEW_NOTE,
+        title: '新規ノート',
         content: WELCOME.WELCOME_NOTE_CONTENT,
         lastEditTime: new Date() // デフォルトの最終編集日時
       }
