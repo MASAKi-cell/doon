@@ -51,6 +51,11 @@ function createWindow(): void {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
 
+  // デバッグ
+  if (is.dev) {
+    mainWindow.webContents.openDevTools()
+  }
+
   // 自動アップデート
   if (!is.dev) {
     autoUpdater.checkForUpdates()
