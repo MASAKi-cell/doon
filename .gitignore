@@ -4,4 +4,7 @@ out
 .DS_Store
 *.log*
 .env
+
+# resources
 resources/**/*.md
+resources/**/*.sqlite

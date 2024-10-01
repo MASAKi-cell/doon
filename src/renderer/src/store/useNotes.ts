@@ -11,11 +11,11 @@ const getNotes = atom<NoteInfo[] | Promise<NoteInfo[]>>(async () => {
 })
 export const notesAtom = unwrap(getNotes, (prev) => prev ?? [])
 
-/**  */
-export const writableNotesAtom = atom<NoteInfo[], [NoteInfo[]], void>(
+/** 値の書き換えロジック */
+const writableNotesAtom = atom<NoteInfo[], [NoteInfo[]], void>(
   [] as NoteInfo[], // 初期値
   (_, set, newNotes: NoteInfo[]) => {
-    set(writableNotesAtom, newNotes) // 値の書き換えロジック
+    set(writableNotesAtom, newNotes)
   }
 )
 
@@ -85,7 +85,7 @@ export const createNoteAtom = atom(null, async (get, set, newNote: NoteInfo) => 
     return
   }
 
-  set(notesAtom, [newNote, ...notes.filter((note) => note.title !== newNote.title)])
+  set(writableNotesAtom, [newNote, ...notes.filter((note) => note.uuid !== newNote.uuid)])
   set(selectedNoteIndexAtom, 0)
 })
 
@@ -101,7 +101,7 @@ export const deleteNoteAtom = atom(null, async (get, set) => {
   }
 
   set(
-    notesAtom,
+    writableNotesAtom,
     notes.filter((note) => note.title !== selectedNote.title)
   )
   set(selectedNoteIndexAtom, null)
