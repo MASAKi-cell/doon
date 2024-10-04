@@ -19,7 +19,7 @@ const writableNotesAtom = atom<NoteInfo[], [NoteInfo[]], void>(
   }
 )
 
-export const selectedNoteIndexAtom = atom<number | null>(null)
+export const selectedNoteIndexAtom = atom<number | null>(0)
 
 /**
  * note選択
