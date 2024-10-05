@@ -5,19 +5,12 @@ import { atom } from 'jotai'
 /** tyes */
 import { NoteInfo } from '@renderer/contents/note'
 
-const getNotes = atom<NoteInfo[] | Promise<NoteInfo[]>>(async () => {
+const getNotes = async (): Promise<NoteInfo[]> => {
   const notes: NoteInfo[] = await window.electron.getNotes()
   return notes.sort((a, b) => b.lastEditTime.getTime() - a.lastEditTime.getTime())
-})
-export const notesAtom = unwrap(getNotes, (prev) => prev ?? [])
-
-/** 値の書き換えロジック */
-const writableNotesAtom = atom<NoteInfo[], [NoteInfo[]], void>(
-  [] as NoteInfo[], // 初期値
-  (_, set, newNotes: NoteInfo[]) => {
-    set(writableNotesAtom, newNotes)
-  }
-)
+}
+const notesAtomAsync = atom<NoteInfo[] | Promise<NoteInfo[]>>(getNotes())
+export const notesAtom = unwrap(notesAtomAsync, (prev) => prev)
 
 export const selectedNoteIndexAtom = atom<number | null>(0)
 
@@ -62,7 +55,7 @@ export const saveNoteAtom = atom(null, (get, set) => {
   if (!selectedNote || !notes) return
 
   set(
-    writableNotesAtom,
+    notesAtom,
     notes.map((note) => {
       if (note.uuid === selectedNote.uuid) {
         return {
@@ -85,7 +78,7 @@ export const createNoteAtom = atom(null, async (get, set, newNote: NoteInfo) => 
     return
   }
 
-  set(writableNotesAtom, [newNote, ...notes.filter((note) => note.uuid !== newNote.uuid)])
+  set(notesAtom, [newNote, ...notes.filter((note) => note.uuid !== newNote.uuid)])
   set(selectedNoteIndexAtom, 0)
 })
 
@@ -101,8 +94,8 @@ export const deleteNoteAtom = atom(null, async (get, set) => {
   }
 
   set(
-    writableNotesAtom,
-    notes.filter((note) => note.title !== selectedNote.title)
+    notesAtom,
+    notes.filter((note) => note.uuid !== selectedNote.uuid)
   )
-  set(selectedNoteIndexAtom, null)
+  set(selectedNoteIndexAtom, 0)
 })
