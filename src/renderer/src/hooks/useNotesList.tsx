@@ -5,7 +5,6 @@ import { selectedNoteIndexAtom as selectedNoteIndex, notesAtom } from '@renderer
 
 export const useNotesList = ({ onSelect }: { onSelect?: () => void }) => {
   const notes = useAtomValue(notesAtom)
-
   const [selectedIndex, setSelectedNoteIndex] = useAtom(selectedNoteIndex)
 
   const handleNoteSelect = (index: number): void => {

@@ -9,9 +9,13 @@ import { deleteNoteAtom, selectedNoteAtom } from '@renderer/store/useNotes'
 /** scss */
 import style from '@renderer/styles/features/button/deleteNoteButton.module.scss'
 
+/** store */
+import { selectedNoteIndexAtom as selectedNoteIndex } from '@renderer/store/useNotes'
+
 export const DeleteNoteButton = ({ ...props }: ActionButtonProps) => {
   const deleteNote = useSetAtom(deleteNoteAtom)
   const selectedNote = useAtomValue(selectedNoteAtom)
+  const setSelectedNoteIndex = useSetAtom(selectedNoteIndex)
 
   const handleDelete = async (): Promise<void> => {
     if (!selectedNote) {
@@ -27,6 +31,7 @@ export const DeleteNoteButton = ({ ...props }: ActionButtonProps) => {
     }
 
     deleteNote()
+    setSelectedNoteIndex(0)
   }
 
   return (
