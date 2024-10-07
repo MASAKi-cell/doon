@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, ipcMain, crashReporter } from 'electron'
+import { app, shell, BrowserWindow, crashReporter } from 'electron'
 import { autoUpdater } from 'electron-updater'
 import { join } from 'path'
 import './ipc'
